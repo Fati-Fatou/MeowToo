@@ -11,18 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Traitement.belongsTo(Animal, {
-        foreignKey: 'id_animal',
-        onDelete: 'CASCADE'
-      });
-
       Traitement.hasMany(models.RappelTraitement);
+
+      Traitement.belongsTo(models.Animal, {
+        foreignKey: {
+          allowNull: false
+        }
+      });
     }
   };
   Traitement.init({
     idANIMAL: DataTypes.INTEGER,
     libelle: DataTypes.STRING,
-    rappel: DataTypes.BOOELAN
+    rappel: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Traitement',

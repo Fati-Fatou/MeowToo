@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Poids.belongsTo(Animal, {
+      Poids.belongsTo(models.Animal, {
         foreignKey: {
           allowNull: false
         }
