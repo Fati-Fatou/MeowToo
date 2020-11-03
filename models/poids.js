@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Poids.init({
-    idANIMAL: DataTypes.INTEGER,
     poids: DataTypes.INTEGER,
     datePesee: DataTypes.DATE
   }, {

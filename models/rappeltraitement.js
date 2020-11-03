@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   RappelTraitement.init({
-    idTRAITEMENT: DataTypes.INTEGER,
     dateRappel: DataTypes.DATE
   }, {
     sequelize,

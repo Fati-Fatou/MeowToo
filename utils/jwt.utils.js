@@ -16,7 +16,7 @@ module.exports = {
         })
     },
     parseAuthorization: function(authorization) {
-        return(authorization != null) ? authorization.replace('Baerer ', '') : null;
+        return(authorization != null) ? authorization.replace('Bearer ', '') : null;
     },
     getUserId: function(authorization) {
         var userId = -1;

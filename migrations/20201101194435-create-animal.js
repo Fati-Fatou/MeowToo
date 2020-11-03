@@ -16,7 +16,7 @@ module.exports = {
         allowNull: true,
         type: Sequelize.DATE
       },
-      idUTILISATEUR: {
+      userId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         foreignKey: true,
@@ -27,11 +27,21 @@ module.exports = {
       },
       espece: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.ENUM,
+        values: [
+          'Chat',
+          'Chien',
+        ],
+        defaultValue: 'Chat'
       },
       genre: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.ENUM,
+        values: [
+          'Mâle',
+          'Femelle',
+        ],
+        defaultValue: 'Femelle'
       },
       race: {
         allowNull: true,

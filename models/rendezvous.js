@@ -25,8 +25,6 @@ module.exports = (sequelize, DataTypes) => {
   };
   RendezVous.init({
     dateRendezVous: DataTypes.DATE,
-    idANIMAL: DataTypes.INTEGER,
-    idPROFESSIONNEL: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'RendezVous',

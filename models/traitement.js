@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Traitement.init({
-    idANIMAL: DataTypes.INTEGER,
     libelle: DataTypes.STRING,
     rappel: DataTypes.BOOLEAN
   }, {

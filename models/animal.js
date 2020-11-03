@@ -17,17 +17,13 @@ module.exports = (sequelize, DataTypes) => {
 
       Animal.hasMany(models.Poids);
       Animal.hasMany(models.RendezVous);
-      Animal.belongsTo(models.Utilisateur, {
-        foreignKey: {
-          allowNull: false
-        }
-      });
+      Animal.belongsTo(models.Utilisateur);
     }
   };
   Animal.init({
     nom: DataTypes.STRING,
     dateNaissance: DataTypes.DATE,
-    idUTILISATEUR: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
     espece: DataTypes.STRING,
     genre: DataTypes.STRING,
     race: DataTypes.STRING

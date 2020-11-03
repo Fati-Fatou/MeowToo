@@ -24,7 +24,7 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
-      idCATEGORIEPRO: {
+      categorieProId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {

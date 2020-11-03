@@ -5,7 +5,7 @@ var models = require('../models');
 
 // Constants
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
+const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
 //Routes
 module.exports = {
@@ -47,18 +47,17 @@ module.exports = {
                     .then(function(newUser) {
                         return res.status(201).json({'userId': newUser.id});
                     })
-                
-                .catch(function(err) {
-                    return res.status(500).json({ 'error': 'Ajout de l\'utilisateur impossible'});
+                    .catch(function(err) {
+                        return res.status(500).json({ 'error': 'Ajout de l\'utilisateur impossible' });
                 });
             });
 
             } else {
-                return res.status(409).json({ 'error': 'user already exist'});
+                return res.status(409).json({ 'error': 'user already exist' });
             }
             
         }).catch(function(err) {
-            return res.status(500).json({'error': 'unable to verify user'});
+            return res.status(500).json({'error': 'unable to verify user' });
         });
     },
     login: function(req, res) {

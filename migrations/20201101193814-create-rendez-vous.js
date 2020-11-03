@@ -12,7 +12,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      idANIMAL: {
+      animalId: {
         allowNull: false,
         type: Sequelize.INTEGER,       
         references: {
@@ -20,7 +20,7 @@ module.exports = {
           key: 'id'
         }
       },
-      idPROFESSIONNEL: {
+      professionnelId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
