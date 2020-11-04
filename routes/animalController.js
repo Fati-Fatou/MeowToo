@@ -1,57 +1,42 @@
 // Imports
+const express = require('express');
+var router = express.Router();
 var jwtUtils = require('../utils/jwt.utils');
 var models = require('../models');
 
-// Constants
+router.get('/', (req, res, next) => {
+    console.log(req.body);
+    res.status(200).json({
+        message: 'GET requests to /animals'
+    });
+});
 
-// Routes
-module.exports = {
-    createAnimal: function(req, res) {
-
-        // Get auth header
-        var headerAuth = req.headers['authorization'];
-        var userId = jwtUtils.getUserId(headerAuth);
-
-        // Params
-        var nom = req.body.nom;
-        var dateNaissance = req.body.dateNaissance;
-        var espece = req.body.espece;
-        var genre = req.body.genre;
-        var race = req.body.race;
-
-        if (userId < 0) {
-            return res.status(400).json({ 'error': 'Wrong Token' });
-        }
-
-        if (nom == null) {
-            return res.status(400).json({ 'error': 'Missing parameters' });
-        }
-
-        models.Utilisateur.findOne({
-            where: { id: userId }
-        })
-        .then(function(userFound) {
-            if(userFound){
-                models.Animal.create({
-                    nom: nom,
-                    dateNaissance: dateNaissance,
-                    userId: userFound.id,
-                    espece: espece,
-                    genre: genre,
-                    race: race
-                })
-                .then(function(newAnimal) {
-                    return res.status(201).json(newAnimal);
-                }) 
-                .catch(function(err) {
-                    return res.status(500).json({ 'error': err + ' - Ajout nouvel animal impossible' });
-                })
-            } else {
-                return res.status(404).json({ 'error': 'User Not Found' });
-            }
-        })
-        .catch(function(err) {
-            return res.status(500).json({ 'error': 'unable verify user' });
+router.post('/', (req, res) => {
+        models.Animal.create({
+            nom: req.body.nom,
+            dateNaissance: null,
+            userId: 1,
+            espece: req.body.espece,
+            genre: req.body.genre,
+            race: req.body.race
+            // image: req.body.image
+        }).then(function (newAnimal) {
+            res.status(201).json(newAnimal.nom);
+        }).catch(function (error) {
+            res.status(500).json(({ 'error': error + ' Echer ajout nouvel animal' }));
         });
-    }
-}
+});
+
+router.patch('/:animalId', (req, res, next) => {
+    res.status(200).json({
+        message: 'Animal mis à jour'
+    })
+});
+
+router.delete('/:animalId',(reqs, res, next) => {
+    res.status(200).json({
+        message: 'Animal supprimé'
+    });
+});
+
+module.exports = router;

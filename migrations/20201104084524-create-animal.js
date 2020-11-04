@@ -9,11 +9,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nom: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       dateNaissance: {
-        allowNull: true,
         type: Sequelize.DATE
       },
       userId: {
@@ -26,26 +24,16 @@ module.exports = {
         }
       },
       espece: {
-        allowNull: false,
-        type: Sequelize.ENUM,
-        values: [
-          'Chat',
-          'Chien',
-        ],
-        defaultValue: 'Chat'
+        type: Sequelize.STRING
       },
       genre: {
-        allowNull: false,
-        type: Sequelize.ENUM,
-        values: [
-          'Mâle',
-          'Femelle',
-        ],
-        defaultValue: 'Femelle'
+        type: Sequelize.STRING
       },
       race: {
-        allowNull: true,
         type: Sequelize.STRING
+      },
+      image: {
+        type: Sequelize.BLOB
       },
       createdAt: {
         allowNull: false,

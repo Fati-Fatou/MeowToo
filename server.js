@@ -1,24 +1,9 @@
 // Imports
-var express = require('express');
-var bodyParser = require('body-parser');
-var apiRouter = require('./apiRouter').router;
+var http = require('http');
+const app = require('./app');
 
-// Insgtancitate server
-var server = express();
+const port = process.env.PORT || 3000;
 
-// Body parser config
-server.use(bodyParser.urlencoded({ extended: true}));
-server.use(bodyParser.json());
+const server = http.createServer(app);
 
-// Configure routes
-server.get('/', function(req, res) {
-    res.setHeader('Content-Type', 'text/html');
-    res.status(200).send('<h1> Bienvenue sur mon serveur </h1>');
-});
-
-server.use('/api/', apiRouter);
-
-// Launch server
-server.listen(8080, function() {
-    console.log('Server en écoute :-)');
-})
+server.listen(port);
