@@ -6,22 +6,18 @@ const multer = require('multer');
 const upload = multer();
 
 const animalRoutes = require('./routes/animalController');
+const userRoutes = require('./routes/userController');
 
 // Body parser config
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// for parsing multipart/form-data
-app.use(upload.array()); 
-app.use(express.static('public'));
 
 // Routes
 app.use('/animals', animalRoutes);
+app.use('/user', userRoutes);
 
-app.use((req, res, next) => {
-    const error = new Error('Not Found');
-    error.status = 404;
-    next(error);
-});
-
+// for parsing multipart/form-data
+app.use(upload.none()); 
+app.use(express.static('public'));
 
 module.exports = app;
