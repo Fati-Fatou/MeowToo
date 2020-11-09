@@ -12,9 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Poids.belongsTo(models.Animal, {
-        foreignKey: {
-          allowNull: false
-        }
+        foreignKey: 'id',
+        as: 'animal',
+        onUpdate: 'NO ACTION',
+        onDelete: 'CASCADE'
       });
     }
   };

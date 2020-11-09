@@ -14,30 +14,20 @@ router.get('/myAnimals', (req, res) => {
     if (userId < 0) {
         return res.status(400).json({ 'error': 'Wrong Token' });
     }
-    
-    models.Utilisateur.findOne({
-        where: { id: userId }
-    }).then(function(userFound) {
-        if(userFound) {
-            models.Animal.findAll({
-                include: [{
-                    model: models.Utilisateur,
-                    attributes: ['id'],
-                    as: 'utilisateur',
-                    where: {
-                        id: userFound.id
-                      }
-                  }]
-            }).then(function(myAnimalsList) {
-                return res.status(200).json(myAnimalsList)
-            }).catch(function(error) {
-                return res.status(400).json({ 'error': error + ' Echec récuperation des animaux' });
-            })
-        } else {
-            return res.status(400).json({ 'error': error + ' Echec identification utilisateur' });
-        }
-    }).catch(function(error) {
-        return res.status(400).json({ 'error': error + ' Echec vérification utilisateur' });
+
+    models.Animal.findAll({
+        include: [{
+            model: models.Utilisateur,
+            attributes: ['id'],
+            as: 'utilisateur',
+            where: {
+                id: userId
+            }
+        }]
+    }).then(function (myAnimalsList) {
+        return res.status(200).json(myAnimalsList)
+    }).catch(function (error) {
+        return res.status(400).json({ 'error': error + ' Echec récuperation des animaux' });
     });
 });
 
@@ -50,40 +40,66 @@ router.post('/new', upload.single('image'), (req, res) => {
         return res.status(400).json({ 'error': 'Wrong Token' });
     }
 
-    models.Utilisateur.findOne({
-        where: { id: userId }
-    }).then(function(unserFound) {
-        if(unserFound) {
-            models.Animal.create({
-                nom: req.body.nom,
-                dateNaissance: req.body.dateNaissance,
-                userId: unserFound.id,
-                espece: req.body.espece,
-                genre: req.body.genre,
-                race: req.body.race,
-                image: req.file
-            }).then(function (newAnimal) {
-                return res.status(201).json(newAnimal.nom);
-            }).catch(function (error) {
-                return res.status(500).json(({ 'error': error + ' Echec ajout nouvel animal' }));
-            });
-        } else {
-            return res.status(404).json({ 'Error': 'Utilisateur non trouvé dans la base de données'});
-        }
-    }).catch(function(error){
-        return res.status(404).json({ 'Error': 'Vérification utilisateur impossible'}); 
+    models.Animal.create({
+        nom: req.body.nom,
+        dateNaissance: req.body.dateNaissance,
+        userId: userId,
+        espece: req.body.espece,
+        genre: req.body.genre,
+        race: req.body.race,
+        image: req.file
+    }).then(function (newAnimal) {
+        return res.status(201).json(newAnimal.nom);
+    }).catch(function (error) {
+        return res.status(500).json(({ 'error': error + ' Echec ajout nouvel animal' }));
     });
 });
 
-router.patch('/updateAnimal/:animalId', (req, res, next) => {
-    res.status(200).json({
-        message: 'Animal mis à jour'
-    })
+router.patch('/updateAnimal/:animalId', (req, res) => {
+    // Param
+    var animalId = req.params.animalId;
+
+    // Get Auth Header
+    var headerAuth = req.headers['authorization'];
+    var userId = jwtUtils.getUserId(headerAuth);
+
+    if (userId < 0) {
+        return res.status(400).json({ 'error': 'Wrong Token' });
+    }
+
+    models.Animal.update({
+        attributes: ['nom', 'dateNaissance', 'espece', 'genre', 'race', 'image'],
+        where: { id: animalId }
+    }).then(function (animalUpdated) {
+        return res.status(200).json(animalUpdated);
+    }).catch(function (error) {
+        return res.status(400).json({ 'error': error + ' Echec mise à jour de l\'animal' });
+    });
+
 });
 
-router.delete('/deleteAnimal/:animalId',(reqs, res, next) => {
-    res.status(200).json({
-        message: 'Animal supprimé'
+router.delete('/deleteAnimal/:animalId', (req, res) => {
+    // Param
+    var animalId = req.params.animalId;
+    // Get Auth Header
+    var headerAuth = req.headers['authorization'];
+    var userId = jwtUtils.getUserId(headerAuth);
+
+    if (userId < 0) {
+        return res.status(400).json({ 'error': 'Wrong Token' });
+    }
+
+    models.Animal.delete({
+        where: { id: animalId }
+    }).then(function (userDeleted) {
+        if(userDeleted) {
+            return res.status(200).json(userDeleted);
+        } else {
+            return res.status(400).json({ 'Error': ' Supression de l\'animal impossible'});
+        }
+        
+    }).catch(function (error) {
+        return res.status(400).json({ 'Error': error + ' Animal absent de la base de données' });
     });
 });
 

@@ -14,14 +14,18 @@ module.exports = (sequelize, DataTypes) => {
       Animal.hasMany(models.Traitement, {
         foreignKey: 'id_animal',
       });
-      Animal.hasMany(models.Poids);
+
+      Animal.hasMany(models.Poids, {
+        foreignKey: 'id'
+      });
+        
       Animal.hasMany(models.RendezVous);
 
       Animal.belongsTo(models.Utilisateur, {
         foreignKey: 'id',
         as: 'utilisateur',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onUpdate: 'NO ACTION',
+        onDelete: 'CASCADE'
       });
 
     }
