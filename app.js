@@ -8,6 +8,8 @@ const upload = multer();
 const animalRoutes = require('./routes/animalController');
 const userRoutes = require('./routes/userController');
 const poidsRoutes = require('./routes/poidsController');
+const categorieProRoutes = require('./routes/categorieProController');
+const professionnelRoutes = require('./routes/professionnelController');
 
 // Body parser config
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -17,6 +19,8 @@ app.use(bodyParser.json());
 app.use('/animals', animalRoutes);
 app.use('/user', userRoutes);
 app.use('/poids', poidsRoutes);
+app.use('/categorieProfessionnelle', categorieProRoutes);
+app.use('/professionnel', professionnelRoutes);
 
 // for parsing multipart/form-data
 app.use(upload.none()); 

@@ -94,7 +94,6 @@ router.post('/register', (req, res) => {
         }).catch(function (err) {
             return res.status(500).json({ 'error': 'unable to verify user' });
         });
-
 });
 
 

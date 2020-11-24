@@ -14,9 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       Traitement.hasMany(models.RappelTraitement);
 
       Traitement.belongsTo(models.Animal, {
-        foreignKey: {
-          allowNull: false
-        }
+        foreignKey: 'id',
+        as: 'animal',
+        onUpdate: 'NO ACTION',
+        onDelete: 'CASCADE'
       });
     }
   };

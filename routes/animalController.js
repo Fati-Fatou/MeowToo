@@ -1,10 +1,10 @@
 // Imports
 const express = require('express');
-var router = express.Router();
-var jwtUtils = require('../utils/jwt.utils');
-var models = require('../models');
-var multer = require('multer');
-var upload = multer({ dest: 'uploads/' });
+const router = express.Router();
+const jwtUtils = require('../utils/jwt.utils');
+const models = require('../models');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 router.get('/myAnimals', (req, res) => {
     // Get Auth Header
@@ -55,7 +55,7 @@ router.post('/new', upload.single('image'), (req, res) => {
     });
 });
 
-router.patch('/updateAnimal/:animalId', (req, res) => {
+router.patch('/:animalId', (req, res) => {
     // Param
     var animalId = req.params.animalId;
 
@@ -78,7 +78,7 @@ router.patch('/updateAnimal/:animalId', (req, res) => {
 
 });
 
-router.delete('/deleteAnimal/:animalId', (req, res) => {
+router.delete('/:animalId', (req, res) => {
     // Param
     var animalId = req.params.animalId;
     // Get Auth Header
@@ -92,12 +92,11 @@ router.delete('/deleteAnimal/:animalId', (req, res) => {
     models.Animal.delete({
         where: { id: animalId }
     }).then(function (userDeleted) {
-        if(userDeleted) {
+        if (userDeleted) {
             return res.status(200).json(userDeleted);
         } else {
-            return res.status(400).json({ 'Error': ' Supression de l\'animal impossible'});
+            return res.status(400).json({ 'Error': ' Supression de l\'animal impossible' });
         }
-        
     }).catch(function (error) {
         return res.status(400).json({ 'Error': error + ' Animal absent de la base de données' });
     });

@@ -19,7 +19,7 @@ router.post('/new', (req, res) => {
     });
 });
 
-router.get('/getAll', (req, res) => {
+router.get('/', (req, res) => {
 
     models.CategorieProfessionnelle.findAll()
         .then(function (categoriesProFound) {
@@ -34,7 +34,25 @@ router.get('/getAll', (req, res) => {
 
 });
 
-router.update('/update/:idCategoriePro', (req, res) => {
+router.get('/idCategoriePro', (req, res) => {
+    // Param
+    var idCategorieProParam = req.params.idCategoriePro;
+
+    models.CategorieProfessionnelle.findOne({
+        where: { id: idCategorieProParam }
+    }).then(function(categorieProFound) {
+        if(categorieProFound) {
+            return res.status(200).json(categorieProFound);
+        } else {
+            return res.status(400).json({ 'Error': ' Catégorie professionnelle absente de la base de données' });
+        }
+    }).catch(function(error) {
+        return res.status(500).json({ 'Error': ' Récupération catégorie professionnelle impossible' });
+    })
+
+});
+
+router.update('/:idCategoriePro', (req, res) => {
     // Param
     var idCategorieProParam = req.params.idCategoriePro;
 
@@ -61,7 +79,7 @@ router.update('/update/:idCategoriePro', (req, res) => {
     })
 });
 
-router.delete('/delete/:idCategoriePro', (req, res) => {
+router.delete('/:idCategoriePro', (req, res) => {
     // Param
     var idCategorieProParam = req.params.idCategoriePro;
     // Get Auth Header
@@ -81,15 +99,19 @@ router.delete('/delete/:idCategoriePro', (req, res) => {
             models.CategorieProfessionnelle.destroy({
                 where: { id: idCategorieProParam }
             }).then(function(categorieProDeleted) {
-                return res.status(200).json(categorieProDeleted);
+                if (categorieProDeleted) {
+                    return res.status(200).json(categorieProDeleted);
+                } else {
+                    return res.status(400).json({ 'Error': ' La catégorie professionnelle n\'a pas été supprimée' });
+                }
             }).catch(function(error) {
-                return res.status(400).json({ 'Error': error + ' Catégorie professionnelle n\'a pas été supprimée' });
+                return res.status(500).json({ 'Error ': error + ' Supression catégorie professionnelle impossible' });
             });
         } else {
-            return res.status(400).json({ 'Error': ' Utilisateur non trouvé dans la base de données' });
+            return res.status(400).json({ 'Error': ' Utilisateur non trouvé ou non admin' });
         }
     }).catch(function(error) {
-        return res.status(400).json({ 'Error': error + ' Vérification utilisateur impossible' });
+        return res.status(500).json({ 'Error ': error + ' Vérification utilisateur impossible' });
     });
 });
 

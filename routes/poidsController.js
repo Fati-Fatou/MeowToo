@@ -24,7 +24,7 @@ router.post('/new/:idAnimal', (req, res) => {
     });
 });
 
-router.get('/getAll/:idAnimal', (req, res) => {
+router.get('/:idAnimal', (req, res) => {
     //Param
     var animalId = req.params.idAnimal;
 
@@ -54,12 +54,12 @@ router.get('/:idPoids', (req, res) => {
     });
 });
 
-router.patch('/updatePoids/:idPoids', (req, res) => {
+router.patch('/:idPoids', (req, res) => {
     // Param
     var idPoidsParam = req.params.idPoids;
 
     models.Poids.update({
-        attributes: ['poids', 'datePesee'],
+        // TODO PARAMS
         where: { id: idPoidsParam }
     }).then(function (poidsUpdated) {
         if (poidsUpdated) {
@@ -72,7 +72,7 @@ router.patch('/updatePoids/:idPoids', (req, res) => {
     });
 });
 
-router.delete('/deletePoids/:idPoids', (req, res) => {
+router.delete('/:idPoids', (req, res) => {
     // Param
     var idPoidsParam = req.params.idPoids;
 
