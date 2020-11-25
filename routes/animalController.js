@@ -55,9 +55,15 @@ router.post('/new', upload.single('image'), (req, res) => {
     });
 });
 
-router.patch('/:animalId', (req, res) => {
+router.patch('/:animalId', upload.single('image'), (req, res) => {
     // Param
     var animalId = req.params.animalId;
+    var pNom = req.body.nom;
+    var pDateNaissance = req.body.dateNaissance;
+    var pEspece = req.body.espece;
+    var pGenre = req.body.genre;
+    var pRace = req.body.race;
+    var pImage = req.file;
 
     // Get Auth Header
     var headerAuth = req.headers['authorization'];
@@ -67,15 +73,30 @@ router.patch('/:animalId', (req, res) => {
         return res.status(400).json({ 'error': 'Wrong Token' });
     }
 
-    models.Animal.update({
-        attributes: ['nom', 'dateNaissance', 'espece', 'genre', 'race', 'image'],
+    models.Animal.findOne({
         where: { id: animalId }
+    }).then(function(animalFound) {
+        if (animalFound) {
+            
+    models.Animal.update({
+        nom: (pNom ? nom: animalFound.nom),
+        dateNaissance: (pDateNaissance ? dateNaissance : animalFound.dateNaissance),
+        espece: (pEspece ? espece : animalFound.espece),
+        genre: (pGenre ? genre : animalFound.genre),
+        race: (pRace ? race : animalFound.race),
+        image: (pImage ? image : animalFound.image) 
     }).then(function (animalUpdated) {
         return res.status(200).json(animalUpdated);
     }).catch(function (error) {
         return res.status(400).json({ 'error': error + ' Echec mise à jour de l\'animal' });
     });
 
+        } else {
+            return res.status(400).json({ 'Error': ' Animal absent de la base de données' });
+        }
+    }).catch(function(error) {
+        return res.status(500).json({ 'Error ' + error + ' Récupération de l\'animal impossible' });
+    });
 });
 
 router.delete('/:animalId', (req, res) => {
@@ -89,16 +110,16 @@ router.delete('/:animalId', (req, res) => {
         return res.status(400).json({ 'error': 'Wrong Token' });
     }
 
-    models.Animal.delete({
+    models.Animal.destroy({
         where: { id: animalId }
-    }).then(function (userDeleted) {
-        if (userDeleted) {
-            return res.status(200).json(userDeleted);
+    }).then(function (animalDeleted) {
+        if (animalDeleted) {
+            return res.status(200).json(animalDeleted);
         } else {
-            return res.status(400).json({ 'Error': ' Supression de l\'animal impossible' });
+            return res.status(400).json({ 'Error': ' L\'animal n\'a pas été supprimé' });
         }
     }).catch(function (error) {
-        return res.status(400).json({ 'Error': error + ' Animal absent de la base de données' });
+        return res.status(500).json({ 'Error ': error + ' Supression de l\'animal impossible' });
     });
 });
 

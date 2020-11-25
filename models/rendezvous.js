@@ -12,14 +12,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       RendezVous.belongsTo(models.Animal, {
-        foreignKey: {
-          allowNull: false
-        }
+        foreignKey: 'id',
+        as: 'rendezVous',
+        onUpdate: 'NO ACTION',
+        onDelete: 'CASCADE'
       });
+  
       RendezVous.belongsTo(models.Professionnel, {
-        foreignKey: {
-          allowNull: false
-        }
+        foreignKey: 'id',
+        as: 'rendezVous',
+        onUpdate: 'NO ACTION',
+        onDelete: 'CASCADE'
       });
     }
   };

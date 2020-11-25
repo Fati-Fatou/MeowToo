@@ -11,12 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Professionnel.hasMany(models.RendezVous);
-      Professionnel.belongsTo(models.CategorieProfessionnelle, {
-        foreignKey: {
-          allowNull: false
-        }
+      Professionnel.hasMany(models.RendezVous, {
+        foreignKey: 'id'
       });
+      Professionnel.belongsTo(models.CategorieProfessionnelle, {
+        foreignKey: 'id',
+        as: 'categoriePro',
+        onUpdate: 'NO ACTION',
+        onDelete: 'CASCADE'
+      });
+
     }
   };
   Professionnel.init({

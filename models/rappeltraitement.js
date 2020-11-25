@@ -12,9 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       RappelTraitement.belongsTo(models.Traitement, {
-        foreignKey: {
-          allowNull: false
-        }
+        foreignKey: 'id',
+        as: 'traitement',
+        onUpdate: 'NO ACTION',
+        onDelete: 'CASCADE'
+      });
       });
     }
   };

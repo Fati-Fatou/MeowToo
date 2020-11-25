@@ -38,7 +38,6 @@ router.get('/:idAnimal', (req, res) => {
             }
         }]
     });
-
 });
 
 router.get('/:idPoids', (req, res) => {
@@ -57,18 +56,30 @@ router.get('/:idPoids', (req, res) => {
 router.patch('/:idPoids', (req, res) => {
     // Param
     var idPoidsParam = req.params.idPoids;
+    var pPoids = req.body.poids;
+    var pdatePesee = req.body.datePesee;
 
-    models.Poids.update({
-        // TODO PARAMS
+    models.Poids.findOne({
         where: { id: idPoidsParam }
-    }).then(function (poidsUpdated) {
-        if (poidsUpdated) {
-            return res.status(200).json(poidsUpdated);
+    }).then(function(poidsFound) {
+        if(poidsFound) {
+            models.Poids.update({
+                poids: (pPoids ? poids : poidsFound.poids),
+                datePesee: (pdatePesee ? datePesee : poidsFound.datePesee)
+            }).then(function (poidsUpdated) {
+                if (poidsUpdated) {
+                    return res.status(200).json(poidsUpdated);
+                } else {
+                    return res.status(400).json({ 'Error': ' Poids non mis à jour' });
+                }
+            }).catch(function (error) {
+                return res.status(400).json({ 'Error': error + ' poids pour mise à jour non trouvé' });
+            });
         } else {
-            return res.status(400).json({ 'Error': ' Poids non mis à jour' });
+            return res.status(400).json({ 'Error': ' Le poids à modifier n\'est pas dans la base de données' });
         }
-    }).catch(function (error) {
-        return res.status(400).json({ 'Error': error + ' poids pour mise à jour non trouvé' });
+    }).catch(function(error) {
+        return res.status(500).json({ 'Error ': error + ' Récupération du poids impossible' });
     });
 });
 
@@ -93,9 +104,8 @@ router.delete('/:idPoids', (req, res) => {
             return res.status(400).json({ 'Error': error + ' Suppression du poids impossible'});
         }  
     }).catch(function(error) {
-        return res.status(400).json({ 'Error': error + ' Poids à supprimer non trouvé dans la base de données'});
+        return res.status(500s).json({ 'Error': error + ' Poids à supprimer non trouvé dans la base de données'});
     });
-
 });
 
 module.exports = router;

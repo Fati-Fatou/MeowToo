@@ -19,7 +19,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'id'
       });
         
-      Animal.hasMany(models.RendezVous);
+      Animal.hasMany(models.RendezVous, {
+        foreignKey: 'id'
+      });
 
       Animal.belongsTo(models.Utilisateur, {
         foreignKey: 'id',

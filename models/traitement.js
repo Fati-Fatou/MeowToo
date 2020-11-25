@@ -11,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Traitement.hasMany(models.RappelTraitement);
+      Traitement.hasMany(models.RappelTraitement, {
+        foreignKey: 'id'
+      });
 
       Traitement.belongsTo(models.Animal, {
         foreignKey: 'id',

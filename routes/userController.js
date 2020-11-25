@@ -179,7 +179,7 @@ router.put('/updateUser', (req, res) => {
     });
 });
 
-router.put('/updateUser/:idUser', (req, res) => {
+router.put('/:idUser', (req, res) => {
     // Param
     var idUserParam = req.params.idUser;
     // Get Auth Header
@@ -210,7 +210,8 @@ router.put('/updateUser/:idUser', (req, res) => {
     });
 });
 
-router.delete('/deleteUser', (req, res) => {
+// Delete current user
+router.delete('/', (req, res) => {
     // Get Auth Header
     var headerAuth = req.headers['authorization'];
     var userId = jwtUtils.getUserId(headerAuth);
@@ -238,7 +239,8 @@ router.delete('/deleteUser', (req, res) => {
     });
 });
 
-router.delete('/deleteUser/:id', (req, res) => {
+// Admin delete one user
+router.delete('/:id', (req, res) => {
     // Param
     var idUserParam = req.params.id;
     // Get Auth Header
@@ -257,16 +259,21 @@ router.delete('/deleteUser/:id', (req, res) => {
             
             models.Utilisateur.destroy({
                 where: { id: idUserParam }
-            }).then(function () {
-                return res.status(200).json({ 'Message Sucess': 'L\'utilisateur a bien été supprimé' });
+            }).then(function(isDeleted) {
+                if(isDeleted == true) {
+                    return res.status(200).json({isDeleted});
+                } else {
+                    return res.status(400).json({ 'Message Sucess': 'L\'utilisateur n\'a pas été supprimé' });
+                }
+                
             }).catch(function (error) {
-                return res.status(400).json({ 'Error': error + ' L\'utilisateur n\'a pas été supprmié' });
+                return res.status(500).json({ 'Error': error + ' Supression utilisateur impossible' });
             });
         } else {
             return res.status(400).json({ 'Error': ' Utilisateur non trouvé dans la base de donnée OU non admin' });
         }
     }).catch(function (error) {
-        return res.status(400).json({ 'Error': error + ' Vérification de l\'utilisateur impossible' });
+        return res.status(500).json({ 'Error': error + ' Vérification de l\'utilisateur impossible' });
     });
 });
 

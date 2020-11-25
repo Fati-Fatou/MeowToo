@@ -39,10 +39,17 @@ router.get('/', (req, res) => {
 
 router.get('/:idCategorieProParam', (req, res) => {
     // Param
-    var idCategorieProParam = req.params.idCategorieProParam;
-
+    var pCategoriePro = req.params.idCategorieProParam;
+    // TODO check fk
     models.Professionnel.findAll({
-        where: { id: idCategorieProParam }
+        include: [{
+            model: models.CategorieProfessionnelle,
+            attributes: ['id'],
+            as: 'categoriePro',
+            where: {
+                id: pCategoriePro
+            }
+        }]
     }).then(function (professionnnelsFound) {
         if (professionnnelsFound) {
             return res.status(200).status(professionnnelsFound);
@@ -122,7 +129,7 @@ router.delete('/:idProParam', (req, res) => {
         where: { id: userId }
     }).then(function (userFound) {
 
-        if (userFound && userFound.isAdmin == true) {
+        if (userFound || userFound.isAdmin == true) {
 
             models.Professionnel.destroy({
                 where: { id: idProParam }
