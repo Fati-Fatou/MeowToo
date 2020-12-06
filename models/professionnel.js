@@ -12,13 +12,19 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Professionnel.hasMany(models.RendezVous, {
-        foreignKey: 'id'
+        foreignKey: 'idProfessionnelRDV'
       });
+      
       Professionnel.belongsTo(models.CategorieProfessionnelle, {
         foreignKey: 'id',
         as: 'categoriePro',
-        onUpdate: 'NO ACTION',
-        onDelete: 'CASCADE'
+        constraints: false
+      });
+
+      Professionnel.belongsTo(models.Utilisateur, {
+        foreignKey: 'id',
+        as: 'utilisateur_id',
+        constraints: false
       });
 
     }
@@ -27,7 +33,10 @@ module.exports = (sequelize, DataTypes) => {
     nom: DataTypes.STRING,
     email: DataTypes.STRING,
     telephone: DataTypes.INTEGER,
-    adress: DataTypes.STRING,
+    adresse: DataTypes.STRING,
+    codePostal: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
+    categorieProId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Professionnel',

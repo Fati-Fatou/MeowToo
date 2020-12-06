@@ -25,9 +25,8 @@ module.exports = (sequelize, DataTypes) => {
 
       Animal.belongsTo(models.Utilisateur, {
         foreignKey: 'id',
-        as: 'utilisateur',
-        onUpdate: 'NO ACTION',
-        onDelete: 'CASCADE'
+        as: 'utilisateur_id',
+        constraints: false
       });
 
     }

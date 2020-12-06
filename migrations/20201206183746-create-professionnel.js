@@ -9,26 +9,33 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nom: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       email: {
-        allowNull: true,
         type: Sequelize.STRING
       },
       telephone: {
-        allowNull: true,
         type: Sequelize.INTEGER
       },
-      adress: {
-        allowNull: true,
+      adresse: {
         type: Sequelize.STRING
       },
-      categorieProId: {
-        allowNull: false,
+      codePostal: {
+        type: Sequelize.INTEGER
+      },
+      userId: {
         type: Sequelize.INTEGER,
+        foreignKey: true,
         references: {
-          model: 'CategoriesProfessionnelles',
+          model: 'Utilisateurs',
+          key: 'id'
+        }
+      },
+      categorieProId: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        references: {
+          model: 'CategorieProfessionnelles',
           key: 'id'
         }
       },

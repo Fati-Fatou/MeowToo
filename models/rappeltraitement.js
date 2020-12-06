@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'NO ACTION',
         onDelete: 'CASCADE'
       });
-      });
+      
     }
   };
   RappelTraitement.init({

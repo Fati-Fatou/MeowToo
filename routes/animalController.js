@@ -16,18 +16,28 @@ router.get('/myAnimals', (req, res) => {
     }
 
     models.Animal.findAll({
-        include: [{
-            model: models.Utilisateur,
-            attributes: ['id'],
-            as: 'utilisateur',
-            where: {
-                id: userId
-            }
-        }]
+        where: { id: userId }
     }).then(function (myAnimalsList) {
         return res.status(200).json(myAnimalsList)
     }).catch(function (error) {
         return res.status(400).json({ 'error': error + ' Echec récuperation des animaux' });
+    });
+});
+
+router.get('/:idAnimal', (req, res) => {
+    // Param
+    var pIdAnimal = req.params.idAnimal;
+
+    models.Animal.findOne({
+        where: { id: pIdAnimal }
+    }).then(function (animalFound) {
+        if(animalFound) {
+            return res.status(200).json(animalFound);
+        } else {
+            return res.status(400).json({ 'Error': ' Animal absent de la base de données' });
+        }
+    }).catch(function (error) {
+        return res.status(500).json({ 'Error': error + ' Récupération de l\'animal impossible' });
     });
 });
 
@@ -75,27 +85,25 @@ router.patch('/:animalId', upload.single('image'), (req, res) => {
 
     models.Animal.findOne({
         where: { id: animalId }
-    }).then(function(animalFound) {
+    }).then(function (animalFound) {
         if (animalFound) {
-            
-    models.Animal.update({
-        nom: (pNom ? nom: animalFound.nom),
-        dateNaissance: (pDateNaissance ? dateNaissance : animalFound.dateNaissance),
-        espece: (pEspece ? espece : animalFound.espece),
-        genre: (pGenre ? genre : animalFound.genre),
-        race: (pRace ? race : animalFound.race),
-        image: (pImage ? image : animalFound.image) 
-    }).then(function (animalUpdated) {
-        return res.status(200).json(animalUpdated);
-    }).catch(function (error) {
-        return res.status(400).json({ 'error': error + ' Echec mise à jour de l\'animal' });
-    });
-
+            models.Animal.update({
+                nom: (pNom ? pNom : animalFound.nom),
+                dateNaissance: (pDateNaissance ? pDateNaissance : animalFound.dateNaissance),
+                espece: (pEspece ? pEspece : animalFound.espece),
+                genre: (pGenre ? pGenre : animalFound.genre),
+                race: (pRace ? pRace : animalFound.race),
+                image: (pImage ? pImage : animalFound.image)
+            }).then(function (animalUpdated) {
+                return res.status(200).json(animalUpdated);
+            }).catch(function (error) {
+                return res.status(400).json({ 'error': error + ' Echec mise à jour de l\'animal' });
+            });
         } else {
             return res.status(400).json({ 'Error': ' Animal absent de la base de données' });
         }
-    }).catch(function(error) {
-        return res.status(500).json({ 'Error ' + error + ' Récupération de l\'animal impossible' });
+    }).catch(function (error) {
+        return res.status(500).json({ 'Error ': error + ' Récupération de l\'animal impossible' });
     });
 });
 

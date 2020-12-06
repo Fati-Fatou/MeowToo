@@ -5,13 +5,18 @@ const models = require('../models');
 const jwtUtils = require('../utils/jwt.utils');
 
 router.post('/new', (req, res) => {
+    // Get Auth Header
+    var headerAuth = req.headers['authorization'];
+    var userId = jwtUtils.getUserId(headerAuth);
 
     models.Professionnel.create({
         nom: req.body.nom,
         email: req.body.email,
         telephone: req.body.telephone,
-        adress: req.body.adress,
-        categorieProId: req.body.categorieProId // TODO vérifier si param ou dans requête
+        adresse: req.body.adresse,
+        codePostal: req.body.codePostal,
+        userId: userId,
+        categorieProId: req.body.categorieProId
     }).then(function (newProfessionnel) {
         if (newProfessionnel) {
             return res.status(200).json(newProfessionnel);
@@ -23,36 +28,38 @@ router.post('/new', (req, res) => {
     });
 });
 
-router.get('/', (req, res) => {
+router.get('/mesProfessionnels', (req, res) => {
 
-    models.Professionnel.findAll()
-        .then(function (professionnnelsFound) {
-            if (professionnnelsFound) {
-                return res.status(200).status(professionnnelsFound);
-            } else {
-                return res.status(400).json({ 'Error': ' Professionnels non présents dans la base de données' });
-            }
-        }).catch(function (error) {
-            return res.status(500).json({ 'Error': error + ' Récupérations des professionnels impossible' });
-        });
+    // Get Auth Header
+    var headerAuth = req.headers['authorization'];
+    var pUserId = jwtUtils.getUserId(headerAuth);
+
+    if (pUserId < 0) {
+        return res.status(400).json({ 'error': 'Wrong Token' });
+    }
+
+    models.Professionnel.findAll({
+        where: { userId: pUserId }
+    }).then(function (professionnnelsFound) {
+        if (professionnnelsFound) {
+            return res.status(200).json(professionnnelsFound);
+        } else {
+            return res.status(400).json({ 'Error': ' Professionnels non présents dans la base de données' });
+        }
+    }).catch(function (error) {
+        return res.status(500).json({ 'Error': error + ' Récupérations des professionnels impossible' });
+    });
 });
 
-router.get('/:idCategorieProParam', (req, res) => {
+router.get('/categoriePro/:idCategorieProParam', (req, res) => {
     // Param
     var pCategoriePro = req.params.idCategorieProParam;
     // TODO check fk
     models.Professionnel.findAll({
-        include: [{
-            model: models.CategorieProfessionnelle,
-            attributes: ['id'],
-            as: 'categoriePro',
-            where: {
-                id: pCategoriePro
-            }
-        }]
+        where: { categorieProId: pCategoriePro }
     }).then(function (professionnnelsFound) {
         if (professionnnelsFound) {
-            return res.status(200).status(professionnnelsFound);
+            return res.status(200).json(professionnnelsFound);
         } else {
             return res.status(400).json({ 'Error': ' Professionnels non présents dans la base de données' });
         }
@@ -78,24 +85,23 @@ router.get('/:idProParam', (req, res) => {
 
 router.patch('/:idProParam', (req, res) => {
     // Param
-    var idProParam = req.params.idProParam;
-
-    var nom = req.body.nom;
-    var email = req.body.email;
-    var tel = req.body.telephone;
-    var adress = req.body.adress;
-    var categoriePro = req.body.categorieProId;
+    var pIdPro = req.params.idProParam;
+    var pNom = req.body.nom;
+    var pEmail = req.body.email;
+    var pTelephone = req.body.telephone;
+    var pAdresse = req.body.adress;
+    var pCategoriePro = req.body.categorieProId;
 
     models.Professionnel.findOne({
-        where: { id: idProParam }
+        where: { id: pIdPro }
     }).then(function (professionnelFound) {
         if (professionnelFound) {
-            models.Professionnel.update({
-                nom: (nom ? nom : professionnelFound.nom),
-                email: (email ? email : professionnelFound.email),
-                telephone: (tel ? telephone : professionnelFound.telephone),
-                adress: (adress ? adress : professionnelFound.adress),
-                categorieProId: (categoriePro ? categorieProId : professionnelFound.categorieProId)
+            professionnelFound.update({
+                nom: (pNom ? pNom : professionnelFound.nom),
+                email: (pEmail ? pEmail : professionnelFound.email),
+                telephone: (pTelephone ? pTelephone : professionnelFound.telephone),
+                adress: (pAdresse ? pAdresse : professionnelFound.adress),
+                categorieProId: (pCategoriePro ? pCategoriePro : professionnelFound.categorieProId)
             }).then(function (professionnelUpdated) {
                 if (professionnelUpdated) {
                     return res.status(200).json(professionnelUpdated);

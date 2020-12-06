@@ -19,7 +19,7 @@ router.get('/:idTraitement', (req, res) => {
             }
         }]
     }).then(function (rappelTraitementFound) {
-        return res.status(200).json({ rappelTraitementFound });
+        return res.status(200).json(rappelTraitementFound);
     }).catch(function (error) {
         return res.status(400).json({ 'Error ': error + ' Il n\'y a pas de rappel pour ce traitement' });
     });
@@ -43,7 +43,7 @@ router.post('/', (req, res) => {
 router.update('/:idRappelTraitement', (req, res) => {
     // Param
     var pIdRappelTraitment = req.params.idRappelTraitement;
-    var pdateRappel = = req.body.dateRappel;
+    var pDateRappel = req.body.dateRappel;
 
     models.RappelTraitement.findOne({
         where: { id: pIdRappelTraitment }
@@ -52,7 +52,7 @@ router.update('/:idRappelTraitement', (req, res) => {
             models.RappelTraitement.update({
                 dateRappel: (pDateRappel ? dateRappel : rappelFound.dateRappel)
             }).then(function (rappelTraitementUpdated) {
-                return res.status(200).json({ rappelTraitementUpdated });
+                return res.status(200).json(rappelTraitementUpdated);
             }).catch(function (error) {
                 return res.status(500).json({ 'Error ': error + ' Mise à jour du rappel traitement impossible' });
             });

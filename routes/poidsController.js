@@ -5,14 +5,14 @@ const models = require('../models');
 
 router.post('/new/:idAnimal', (req, res) => {
     // Params
-    var poids = req.body.poids;
-    var datePesee = req.body.datePesee;
-    var idAnimalParam = req.params.idAnimal;
+    var pPoids = req.body.poids;
+    var pDatePesee = req.body.datePesee;
+    var pIdAnimalParam = req.params.idAnimal;
 
     models.Poids.create({
-        idAnimal: idAnimalParam,
-        poids: poids,
-        datePesee: datePesee
+        animalId: pIdAnimalParam,
+        poids: pPoids,
+        datePesee: pDatePesee
     }).then(function (newPoids) {
         if (newPoids) {
             return res.status(200).json(newPoids);
@@ -24,19 +24,20 @@ router.post('/new/:idAnimal', (req, res) => {
     });
 });
 
-router.get('/:idAnimal', (req, res) => {
+router.get('/animal/:idAnimal', (req, res) => {
     //Param
-    var animalId = req.params.idAnimal;
+    var pAnimalId = req.params.idAnimal;
 
     models.Poids.findAll({
-        include: [{
-            model: models.Animal,
-            attributes: ['id'],
-            as: 'animal',
-            where: {
-                id: animalId
-            }
-        }]
+        where: { animalId: pAnimalId }
+    }).then(function (poidsFound) {
+        if (poidsFound) {
+            return res.status(200).json(poidsFound);
+        } else {
+            return res.status(400).json({ 'Error': ' Les pesées ne sont pas en base de données pour cet animal' });
+        }
+    }).catch(function (error) {
+        return res.status(500).json({ 'Error': ' Récupération des pesées pour cet animal impossible' });
     });
 });
 
@@ -61,11 +62,11 @@ router.patch('/:idPoids', (req, res) => {
 
     models.Poids.findOne({
         where: { id: idPoidsParam }
-    }).then(function(poidsFound) {
-        if(poidsFound) {
-            models.Poids.update({
-                poids: (pPoids ? poids : poidsFound.poids),
-                datePesee: (pdatePesee ? datePesee : poidsFound.datePesee)
+    }).then(function (poidsFound) {
+        if (poidsFound) {
+            poidsFound.update({
+                poids: (pPoids ? pPoids : poidsFound.poids),
+                datePesee: (pdatePesee ? pdatePesee : poidsFound.datePesee)
             }).then(function (poidsUpdated) {
                 if (poidsUpdated) {
                     return res.status(200).json(poidsUpdated);
@@ -78,7 +79,7 @@ router.patch('/:idPoids', (req, res) => {
         } else {
             return res.status(400).json({ 'Error': ' Le poids à modifier n\'est pas dans la base de données' });
         }
-    }).catch(function(error) {
+    }).catch(function (error) {
         return res.status(500).json({ 'Error ': error + ' Récupération du poids impossible' });
     });
 });
@@ -87,24 +88,16 @@ router.delete('/:idPoids', (req, res) => {
     // Param
     var idPoidsParam = req.params.idPoids;
 
-    // Get Auth Header
-    var headerAuth = req.headers['authorization'];
-    var userId = jwtUtils.getUserId(headerAuth);
-
-    if (userId < 0) {
-        return res.status(400).json({ 'error': 'Wrong Token' });
-    }
-
-    models.Poids.delete({
+    models.Poids.destroy({
         where: { id: idPoidsParam }
-    }).then(function(animalDeleted) {
-        if(animalDeleted) {
+    }).then(function (animalDeleted) {
+        if (animalDeleted) {
             return res.status(200).json(animalDeleted);
         } else {
-            return res.status(400).json({ 'Error': error + ' Suppression du poids impossible'});
-        }  
-    }).catch(function(error) {
-        return res.status(500s).json({ 'Error': error + ' Poids à supprimer non trouvé dans la base de données'});
+            return res.status(400).json({ 'Error': error + ' Suppression du poids impossible' });
+        }
+    }).catch(function (error) {
+        return res.status(500).json({ 'Error': error + ' Poids à supprimer non trouvé dans la base de données' });
     });
 });
 

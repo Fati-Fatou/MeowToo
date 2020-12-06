@@ -19,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
       });
   
       RendezVous.belongsTo(models.Professionnel, {
-        foreignKey: 'id',
-        as: 'rendezVous',
+        foreignKey: 'idProfessionnelRDV',
+        as: 'rendezVousProfessionnel',
         onUpdate: 'NO ACTION',
         onDelete: 'CASCADE'
       });

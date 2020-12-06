@@ -5,9 +5,11 @@ const models = require('../models');
 const jwtUtils = require('../utils/jwt.utils');
 
 router.post('/new', (req, res) => {
+    // Param
+    var pLibelle = req.body.libelle;
 
     models.CategorieProfessionnelle.create({
-        libelle: req.body.libelle
+        libelle: pLibelle
     }).then(function (newCategoriePro) {
         if (newCategoriePro) {
             return res.status(200).json(newCategoriePro);
@@ -34,25 +36,25 @@ router.get('/', (req, res) => {
 
 });
 
-router.get('/idCategoriePro', (req, res) => {
+router.get('/:idCategoriePro', (req, res) => {
     // Param
     var idCategorieProParam = req.params.idCategoriePro;
 
     models.CategorieProfessionnelle.findOne({
         where: { id: idCategorieProParam }
-    }).then(function(categorieProFound) {
-        if(categorieProFound) {
+    }).then(function (categorieProFound) {
+        if (categorieProFound) {
             return res.status(200).json(categorieProFound);
         } else {
             return res.status(400).json({ 'Error': ' Catégorie professionnelle absente de la base de données' });
         }
-    }).catch(function(error) {
+    }).catch(function (error) {
         return res.status(500).json({ 'Error': ' Récupération catégorie professionnelle impossible' });
     })
 
 });
 
-router.update('/:idCategoriePro', (req, res) => {
+router.patch('/:idCategoriePro', (req, res) => {
     // Param
     var idCategorieProParam = req.params.idCategoriePro;
 
@@ -92,25 +94,25 @@ router.delete('/:idCategoriePro', (req, res) => {
 
     models.Utilisateur.findOne({
         where: { id: userId }
-    }).then(function(userFound) {
-        
-        if(userFound && userFound.isAdmin == true) {
+    }).then(function (userFound) {
+
+        if (userFound && userFound.isAdmin == true) {
 
             models.CategorieProfessionnelle.destroy({
                 where: { id: idCategorieProParam }
-            }).then(function(categorieProDeleted) {
+            }).then(function (categorieProDeleted) {
                 if (categorieProDeleted) {
                     return res.status(200).json(categorieProDeleted);
                 } else {
                     return res.status(400).json({ 'Error': ' La catégorie professionnelle n\'a pas été supprimée' });
                 }
-            }).catch(function(error) {
+            }).catch(function (error) {
                 return res.status(500).json({ 'Error ': error + ' Supression catégorie professionnelle impossible' });
             });
         } else {
             return res.status(400).json({ 'Error': ' Utilisateur non trouvé ou non admin' });
         }
-    }).catch(function(error) {
+    }).catch(function (error) {
         return res.status(500).json({ 'Error ': error + ' Vérification utilisateur impossible' });
     });
 });

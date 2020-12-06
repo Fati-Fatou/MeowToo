@@ -147,7 +147,7 @@ router.get('/getAllUsers', (req, res) => {
     });
 });
 
-router.put('/updateUser', (req, res) => {
+router.patch('/updateUser', (req, res) => {
     // Get Auth Header
     var headerAuth = req.headers['authorization'];
     var userId = jwtUtils.getUserId(headerAuth);
@@ -157,31 +157,48 @@ router.put('/updateUser', (req, res) => {
     }
 
     // Params
-    var email = req.body.email;
-    var telephone = req.body.telephone;
+    var pNom = req.body.nom;
+    var pPrenom = req.body.prenom;
+    var pEmail = req.body.email;
+    var pTelephone = req.body.telephone;
+    var pPassword = req.body.password;
 
     models.Utilisateur.findOne({
-        attributes: ['email', 'password', 'telephone'],
         where: { id: userId }
     }).then(function (userFound) {
         if (userFound) {
             userFound.update({
-                email: (email ? email : userFound.email),
-                telephone: (telephone ? telephone : userFound.telephone)
+                nom: (pNom ? pNom : userFound.nom),
+                prenom: (pPrenom ? pPrenom : userFound.prenom),
+                email: (pEmail ? pEmail : userFound.email),
+                telephone: (pTelephone ? pTelephone : userFound.telephone),
+                password: (pPassword ? pPassword : userFound.password)
             }).then(function (userUpdated) {
                 if (userUpdated) {
                     return res.status(200).json(userUpdated);
                 } else {
                     return res.status(400).json({ 'error': 'Erreur lors de la modification de l\'utilisateur' });
                 }
+            }).catch(function (error) {
+                return res.status(400).json({ 'Error ': error + ' Echec mise à jour de l\'utilisateur' });
             });
+        } else {
+            return res.status(400).json({ 'Error ': ' Utilisateur absent de la base de données' });
         }
+    }).catch(function (error) {
+        return res.status(500).json({ 'Error ': error + ' Récupération de l\'utilisateur impossible' });
     });
 });
 
-router.put('/:idUser', (req, res) => {
-    // Param
+router.patch('/:idUser', (req, res) => {
+    // Params
     var idUserParam = req.params.idUser;
+    var pNom = req.body.nom;
+    var pPrenom = req.body.prenom;
+    var pEmail = req.body.email;
+    var pTelephone = req.body.telephone;
+    var pIsAdmin = req.body.isAdmin;
+
     // Get Auth Header
     var headerAuth = req.headers['authorization'];
     var userId = jwtUtils.getUserId(headerAuth);
@@ -193,15 +210,35 @@ router.put('/:idUser', (req, res) => {
     models.Utilisateur.findOne({
         where: { id: userId }
     }).then(function (userFound) {
-        if (userFound && userFound.isAdmin == 1) {
-            models.Utilisateur.update({
-                attributes: ['email', 'password', 'telephone'],
+        if (userFound && userFound.isAdmin == true) {
+
+            models.Utilisateur.findOne({
                 where: { id: idUserParam }
-            }).then(function (userUpdated) {
-                return res.status(200).json(userUpdated);
+            }).then(function (userToUpdate) {
+
+                if (userToUpdate) {
+                    userToUpdate.update({
+                        nom: (pNom ? pNom : userToUpdate.nom),
+                        prenom: (pPrenom ? pPrenom : userToUpdate.prenom),
+                        email: (pEmail ? pEmail : userToUpdate.email),
+                        telephone: (pTelephone ? pTelephone : userToUpdate.telephone),
+                        isAdmin: (pIsAdmin ? pIsAdmin : userToUpdate.isAdmin)
+                    }).then(function (userUpdated) {
+                        if (userUpdated) {
+                            return res.status(200).json(userUpdated);
+                        } else {
+                            return res.status(400).json({ 'error': 'Erreur lors de la modification de l\'utilisateur' });
+                        }
+                    }).catch(function (error) {
+                        return res.status(400).json({ 'Error': error + ' L\'utilisateur n\'a pas été mis à jour ' });
+                    });
+
+                } else {
+                    return res.status(400).json({ 'Error': ' Utilisateur absent de la base de données ' });
+                }
             }).catch(function (error) {
-                return res.status(400).json({ 'Error:': error + ' L\'utilisateur n\'a pas été modifié' });
-            });
+                return res.status(500).json({ 'Error': error + ' Récupération de l\'utilisateur impossible' });
+            })
         } else {
             return res.status(400).json({ 'Error:': ' Utilisateur non trouvé dans la base de donnée OU non admin' });
         }
@@ -256,16 +293,16 @@ router.delete('/:id', (req, res) => {
     }).then(function (userFound) {
 
         if (userFound && userFound.isAdmin == true) {
-            
+
             models.Utilisateur.destroy({
                 where: { id: idUserParam }
-            }).then(function(isDeleted) {
-                if(isDeleted == true) {
-                    return res.status(200).json({isDeleted});
+            }).then(function (isDeleted) {
+                if (isDeleted == true) {
+                    return res.status(200).json({ isDeleted });
                 } else {
                     return res.status(400).json({ 'Message Sucess': 'L\'utilisateur n\'a pas été supprimé' });
                 }
-                
+
             }).catch(function (error) {
                 return res.status(500).json({ 'Error': error + ' Supression utilisateur impossible' });
             });
