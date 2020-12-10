@@ -56,7 +56,15 @@ router.get('/categoriePro/:idCategorieProParam', (req, res) => {
     var pCategoriePro = req.params.idCategorieProParam;
     // TODO check fk
     models.Professionnel.findAll({
-        where: { categorieProId: pCategoriePro }
+        where: { categorieProId: pCategoriePro },
+        include: [{
+            model: models.CategorieProfessionnelle,
+            attributes: ['libelle'],
+            as: 'categoriePro',
+            where: {
+                id: pCategoriePro
+            }
+        }]
     }).then(function (professionnnelsFound) {
         if (professionnnelsFound) {
             return res.status(200).json(professionnnelsFound);

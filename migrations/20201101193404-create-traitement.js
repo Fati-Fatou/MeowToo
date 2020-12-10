@@ -14,7 +14,6 @@ module.exports = {
         references: {
           model: 'Animals',
           key: 'id',
-          as: 'id_animal'
         }
       },
       libelle: {

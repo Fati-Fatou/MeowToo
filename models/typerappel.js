@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class RappelTraitement extends Model {
+  class TypeRappel extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,20 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      RappelTraitement.belongsTo(models.Traitement, {
+      TypeRappel.belongsTo(models.Medicament, {
         foreignKey: 'id',
-        as: 'traitement',
-        onUpdate: 'NO ACTION',
-        onDelete: 'CASCADE'
+        as: 'medicament_id',
+        constraints: false
       });
-      
+
     }
   };
-  RappelTraitement.init({
-    dateRappel: DataTypes.DATE
+  TypeRappel.init({
+    libelle: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'RappelTraitement',
+    modelName: 'TypeRappel',
   });
-  return RappelTraitement;
+  return TypeRappel;
 };

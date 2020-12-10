@@ -1,24 +1,15 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('RappelTraitements', {
+    await queryInterface.createTable('TypeRappels', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      traitementId: {
-        type: Sequelize.INTEGER,
-        foreignKey: true,
-        references: {
-          model: 'Traitements',
-          key: 'id'
-        }
-      },
-      dateRappel: {
-        allowNull: false,
-        type: Sequelize.DATE
+      libelle: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -31,6 +22,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('RappelTraitements');
+    await queryInterface.dropTable('TypeRappels');
   }
 };

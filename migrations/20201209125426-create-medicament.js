@@ -1,32 +1,43 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('RendezVous', {
+    await queryInterface.createTable('Medicaments', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      dateRendezVous: {
-        allowNull: false,
+      libelle: {
+        type: Sequelize.STRING
+      },
+      dateDebut: {
         type: Sequelize.DATE
       },
+      dateFin: {
+        type: Sequelize.DATE
+      },
+      rappel: {
+        type: Sequelize.BOOLEAN
+      },
+      typeRappelId: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        references: {
+          model: 'TypeRappels',
+          key: 'id'
+        }
+      },
       animalId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,       
+        type: Sequelize.INTEGER,
+        foreignKey: true,
         references: {
           model: 'Animals',
           key: 'id'
         }
       },
-      professionnelId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Professionnels',
-          key: 'id'
-        }
+      statut: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
@@ -39,6 +50,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('RendezVous');
+    await queryInterface.dropTable('Medicaments');
   }
 };

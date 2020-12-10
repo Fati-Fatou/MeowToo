@@ -1,24 +1,24 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('RappelTraitements', {
+    await queryInterface.createTable('RendezVous', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      traitementId: {
-        type: Sequelize.INTEGER,
-        foreignKey: true,
-        references: {
-          model: 'Traitements',
-          key: 'id'
-        }
-      },
-      dateRappel: {
-        allowNull: false,
+      dateRendezVous: {
         type: Sequelize.DATE
+      },
+      animalId: {
+        type: Sequelize.INTEGER
+      },
+      professionnelId: {
+        type: Sequelize.INTEGER
+      },
+      userId: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -31,6 +31,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('RappelTraitements');
+    await queryInterface.dropTable('RendezVous');
   }
 };

@@ -12,15 +12,39 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Animal.hasMany(models.Traitement, {
-        foreignKey: 'id'
+        foreignKey: 'id',
+        onDelete: 'SET NULL',
+        hooks: true
       });
 
       Animal.hasMany(models.Poids, {
-        foreignKey: 'id'
+        foreignKey: 'id',
+        onDelete: 'SET NULL',
+        hooks: true
       });
         
       Animal.hasMany(models.RendezVous, {
-        foreignKey: 'id'
+        foreignKey: 'id',
+        onDelete: 'SET NULL',
+        hooks: true
+      });
+
+      Animal.hasMany(models.Vermifuge, {
+        foreignKey: 'id',
+        onDelete: 'SET NULL',
+        hooks: true
+      });
+
+      Animal.hasMany(models.Vaccin, {
+        foreignKey: 'id',
+        onDelete: 'SET NULL',
+        hooks: true
+      });
+
+      Animal.hasMany(models.Medicament, {
+        foreignKey: 'id',
+        onDelete: 'SET NULL',
+        hooks: true
       });
 
       Animal.belongsTo(models.Utilisateur, {
