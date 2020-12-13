@@ -33,17 +33,16 @@ router.post('/new', (req, res) => {
     });
 });
 
-router.get('/:idAnimal', (req, res) => {
+router.get('/mesTraitements/:idAnimal', (req, res) => {
     // Param
     var pIdAnimal = req.params.idAnimal;
 
     models.Medicament.findAll({
-        raw: true,
         where: { animalId: pIdAnimal },
         include: [{
             model: models.Animal,
-            as: 'animal',
-        }]
+            attributes: [ 'id', 'nom', 'espece', 'genre' ],
+        }],        
     }).then(function (medicamentsFound) {
         if (medicamentsFound) {
             return res.status(200).json(medicamentsFound);
@@ -51,13 +50,13 @@ router.get('/:idAnimal', (req, res) => {
             return res.status(400).json({ 'Error': 'Il n\'y a pas de traitements pour cet animal' });
         }
     }).catch(function (error) {
-        return res.status(500).json({ 'Error': ' Recherche des médicaments impossible' });
+        return res.status(500).json({ 'Error ': error + ' Recherche des médicaments impossible' });
     });
 });
 
 router.get('/:idMedicament', (req, res) => {
     // Param
-    var pIdMedicament = req.params.pIdMedicament;
+    var pIdMedicament = req.params.idMedicament;
 
     models.Medicament.findOne({
         where: { id: pIdMedicament }
@@ -69,10 +68,10 @@ router.get('/:idMedicament', (req, res) => {
         }
     }).catch(function (error) {
         return res.status(500).json({ 'Error ': error + ' Recherche du médicament impossible' });
-    })
+    });
 });
 
-router.update('/:idMedicament', (req, res) => {
+router.patch('/:idMedicament', (req, res) => {
     // Params
     var pIdMedicament = req.params.idMedicament;
     var pLibelle = req.body.libelle;
@@ -116,7 +115,7 @@ router.delete('/:idMedicament', (req, res) => {
     // Param 
     var pIdMedicament = req.params.idMedicament;
 
-    models.findOne({
+    models.Medicament.findOne({
         where: { id: pIdMedicament }
     }).then(function (medicamentFound) {
         if (medicamentFound) {

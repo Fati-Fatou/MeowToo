@@ -11,11 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Animal.hasMany(models.Traitement, {
-        foreignKey: 'id',
-        onDelete: 'SET NULL',
-        hooks: true
-      });
 
       Animal.hasMany(models.Poids, {
         foreignKey: 'id',
@@ -41,11 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         hooks: true
       });
 
-      Animal.hasMany(models.Medicament, {
-        foreignKey: 'id',
-        onDelete: 'SET NULL',
-        hooks: true
-      });
+      Animal.hasMany(models.Medicament);
 
       Animal.belongsTo(models.Utilisateur, {
         foreignKey: 'id',

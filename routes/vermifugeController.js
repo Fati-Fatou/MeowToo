@@ -43,13 +43,14 @@ router.get('/:idVermifuge', (req, res) => {
     });
 });
 
-
+// TODO get by idAnimal
 
 router.patch('/:idVermifuge', (req, res) => {
     // Param
     var pIdVermifuge = req.params.idVermifuge;
     var pDateVermifuge = req.body.dateVermifuge;
     var pDateProchainVermifuge = req.body.dateProchainVermifuge;
+    var pAnimalId = req.body.animalId;
     var pStatut = req.body.statut;
 
     models.Vermifuge.findOne({
@@ -57,6 +58,10 @@ router.patch('/:idVermifuge', (req, res) => {
     }).then(function (vermifugeFound) {
         if (vermifugeFound) {
             vermifugeFound.update({
+                dateVermifuge: ( pDateVermifuge ? pDateVermifuge : vermifugeFound.dateVermifuge),
+                dateProchainVermifuge: (pDateProchainVermifuge ? pDateProchainVermifuge : vermifugeFound.dateProchainVermifuge),
+                animalId: (pAnimalId ? pAnimalId : vermifugeFound.animalId),
+                statut: (pStatut ? pStatut : vermifugeFound.statut)
             }).then(function (vermifugeUpdated) {
                 if (vermifugeUpdated) {
                     return res.status(200).json(vermifugeUpdated);

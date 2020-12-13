@@ -11,7 +11,7 @@ module.exports = {
       dateVermifuge: {
         type: Sequelize.DATE
       },
-      DateProchainVermifuge: {
+      dateProchainVermifuge: {
         type: Sequelize.DATE
       },
       animalId: {

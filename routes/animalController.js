@@ -16,7 +16,7 @@ router.get('/myAnimals', (req, res) => {
     }
 
     models.Animal.findAll({
-        where: { id: userId }
+        where: { userId: userId }
     }).then(function (myAnimalsList) {
         return res.status(200).json(myAnimalsList)
     }).catch(function (error) {

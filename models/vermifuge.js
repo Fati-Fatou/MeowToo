@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   Vermifuge.init({
     dateVermifuge: DataTypes.DATE,
-    DateProchainVermifuge: DataTypes.DATE,
+    dateProchainVermifuge: DataTypes.DATE,
     animalId: DataTypes.INTEGER,
     statut: DataTypes.BOOLEAN
   }, {

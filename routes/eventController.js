@@ -42,9 +42,10 @@ router.get('/:idMedicament', (req, res) => {
     });
 });
 
-router.update('/:idEvent', (req, res) => {
+router.patch('/:idEvent', (req, res) => {
     // Param
     var pIdEvent = req.params.idEvent;
+    var pMedicamentId = req.body.medicamentId;
     var pDatHeureRappel = req.body.dateHeureRappel;
     var pStatut = req.body.statut;
 
@@ -53,6 +54,7 @@ router.update('/:idEvent', (req, res) => {
     }).then(function (eventFound) {
         if (eventFound) {
              eventFound.update({
+                medicamentId: (pMedicamentId ? pMedicamentId : eventFound.medicamentId),
                 dateHeureRappel: (pDatHeureRappel ? pDatHeureRappel : eventFound.dateHeureRappel),
                 statut: (pStatut ? pStatut : eventFound.statut)
              }).then(function (eventUpdated) {

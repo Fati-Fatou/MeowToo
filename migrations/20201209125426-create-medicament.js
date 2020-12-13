@@ -26,7 +26,8 @@ module.exports = {
         references: {
           model: 'TypeRappels',
           key: 'id'
-        }
+        },
+        allowNull: false
       },
       animalId: {
         type: Sequelize.INTEGER,
@@ -34,7 +35,8 @@ module.exports = {
         references: {
           model: 'Animals',
           key: 'id'
-        }
+        },
+        allowNull: false
       },
       statut: {
         type: Sequelize.BOOLEAN

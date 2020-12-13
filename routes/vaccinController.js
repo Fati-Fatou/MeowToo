@@ -11,10 +11,10 @@ router.post('/new', (req, res) => {
     var pStatut = req.body.statut;
 
     models.Vaccin.create({
-        dateVaccin = pDateVaccin,
-        dateProchainVaccin = pDatedProchainVaccin,
-        animalId = pAnimalId,
-        statut = pStatut
+        dateVaccin: pDateVaccin,
+        dateProchainVaccin: pDatedProchainVaccin,
+        animalId: pAnimalId,
+        statut: pStatut
     }).then(function (vaccinCreated) {
         if(vaccinCreated) {
             return res.status(200).json(vaccinCreated);
@@ -31,7 +31,7 @@ router.get('/:idAnimal', (req, res) => {
     var pAnimalId = req.params.idAnimal;
 
     models.Vaccin.findAll({
-        where: { animalId: pAnimalId, status: 0 }
+        where: { animalId: pAnimalId, statut: 0 }
     }).then(function (vaccinFound) {
         if (vaccinFound) {
             return res.status(200).json(vaccinFound);
@@ -43,6 +43,7 @@ router.get('/:idAnimal', (req, res) => {
     });
 });
 
+// TODO get by idVaccin
 
 router.patch('/:idVaccin', (req, res) => {
     // Params
@@ -56,7 +57,7 @@ router.patch('/:idVaccin', (req, res) => {
         where: { id: pIdVaccin}
     }).then(function (vaccinFound) {
         if (vaccinFound) {
-            models.vaccinFound.update({
+            vaccinFound.update({
                 dateVaccin: (pDateVaccin ? pDateVaccin : vaccinFound.dateVaccin),
                 dateProchainVaccin: (pDateProchainVaccin ? pDateProchainVaccin : vaccinFound.dateProchainVaccin),
                 animalId: (pAnimalId ? pAnimalId : vaccinFound.animalId),
