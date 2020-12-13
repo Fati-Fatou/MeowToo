@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/user', userRoutes);
-app.use('/animals', animalRoutes);
+app.use('/animal', animalRoutes);
 app.use('/poids', poidsRoutes);
 app.use('/categorieProfessionnelle', categorieProRoutes);
 app.use('/professionnel', professionnelRoutes);

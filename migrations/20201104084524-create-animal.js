@@ -14,7 +14,7 @@ module.exports = {
       dateNaissance: {
         type: Sequelize.DATE
       },
-      userId: {
+      utilisateurId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         foreignKey: true,

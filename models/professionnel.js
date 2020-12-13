@@ -11,23 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Professionnel.hasMany(models.RendezVous, {
-        foreignKey: 'id',
-        onDelete: 'SET NULL',
-        hooks: true
-      });
+      Professionnel.belongsTo(models.RendezVous);
       
-      Professionnel.belongsTo(models.CategorieProfessionnelle, {
-        foreignKey: 'id',
-        as: 'categoriePro',
-        constraints: false
-      });
+      Professionnel.belongsTo(models.CategorieProfessionnelle);
 
-      Professionnel.belongsTo(models.Utilisateur, {
-        foreignKey: 'id',
-        as: 'utilisateur_id',
-        constraints: false
-      });
+      Professionnel.belongsTo(models.Utilisateur);
 
     }
   };
@@ -37,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     telephone: DataTypes.INTEGER,
     adresse: DataTypes.STRING,
     codePostal: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
+    utilisateurId: DataTypes.INTEGER,
     categorieProId: DataTypes.INTEGER
   }, {
     sequelize,

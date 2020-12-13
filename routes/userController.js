@@ -10,41 +10,6 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
 
-router.post('/login', (req, res) => {
-    // Params
-    var email = req.body.email;
-    var password = req.body.password;
-
-    if (email == null || password == null) {
-        return res.status(400).json({ 'error': 'paramètres manquants' });
-    }
-
-    models.Utilisateur.findOne({
-        where: { email: email }
-    })
-        .then(function (userFound) {
-            if (userFound) {
-
-                bcrypt.compare(password, userFound.password, function (errBycrypt, resBycrypt) {
-                    if (resBycrypt) {
-                        return res.status(201).json({
-                            'userId': userFound.id,
-                            'token': jwtUtils.generateTokenForUser(userFound)
-                        });
-                    } else {
-                        console.log('DEBUG ' + userFound.password);
-                        return res.status(403).json({ 'error': 'password invalide' });
-                    }
-                });
-            } else {
-                return res.status(404).json({ 'error': 'utilisateur non présent dans la Base de données' });
-            }
-        })
-        .catch(function (err) {
-            return res.status(500).json({ 'error': 'vérification utilisateur impossible' });
-        });
-});
-
 router.post('/register', (req, res) => {
     // Params
     var nom = req.body.nom;
@@ -93,6 +58,42 @@ router.post('/register', (req, res) => {
 
         }).catch(function (err) {
             return res.status(500).json({ 'error': 'unable to verify user' });
+        });
+});
+
+
+router.post('/login', (req, res) => {
+    // Params
+    var email = req.body.email;
+    var password = req.body.password;
+
+    if (email == null || password == null) {
+        return res.status(400).json({ 'error': 'paramètres manquants' });
+    }
+
+    models.Utilisateur.findOne({
+        where: { email: email }
+    })
+        .then(function (userFound) {
+            if (userFound) {
+
+                bcrypt.compare(password, userFound.password, function (errBycrypt, resBycrypt) {
+                    if (resBycrypt) {
+                        return res.status(201).json({
+                            'userId': userFound.id,
+                            'token': jwtUtils.generateTokenForUser(userFound)
+                        });
+                    } else {
+                        console.log('DEBUG ' + userFound.password);
+                        return res.status(403).json({ 'error': 'password invalide' });
+                    }
+                });
+            } else {
+                return res.status(404).json({ 'error': 'utilisateur non présent dans la Base de données' });
+            }
+        })
+        .catch(function (err) {
+            return res.status(500).json({ 'error': 'vérification utilisateur impossible' });
         });
 });
 

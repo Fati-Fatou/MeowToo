@@ -12,13 +12,31 @@ module.exports = {
         type: Sequelize.DATE
       },
       animalId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        references: {
+          model: 'Animals',
+          key: 'id'
+        },
+        allowNull: false
       },
       professionnelId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        references: {
+          model: 'Professionnels',
+          key: 'id'
+        },
+        allowNull: false
       },
-      userId: {
-        type: Sequelize.INTEGER
+      utilisateurId: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        references: {
+          model: 'Utilisateurs',
+          key: 'id'
+        },
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

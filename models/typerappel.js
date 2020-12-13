@@ -11,13 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      TypeRappel.belongsTo(models.Medicament, {
-        foreignKey: 'id',
-        as: 'medicament_id',
-        constraints: false
-      });
-
+      TypeRappel.belongsTo(models.Medicament);
     }
+    
   };
   TypeRappel.init({
     libelle: DataTypes.STRING

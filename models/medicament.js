@@ -13,11 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Medicament.belongsTo(models.Animal);
 
-      Medicament.hasMany(models.Event, {
-        foreignKey: 'id',
-        onDelete: 'SET NULL',
-        hooks: true
-      });
+      Medicament.hasMany(models.Event);
 
       Medicament.hasMany(models.TypeRappel, {
         foreignKey: 'id',

@@ -11,11 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Vermifuge.belongsTo(models.Animal, {
-        foreignKey: 'id',
-        as: 'animal_id',
-        constraints: false
-      });
+      Vermifuge.belongsTo(models.Animal);
       
     }
   };

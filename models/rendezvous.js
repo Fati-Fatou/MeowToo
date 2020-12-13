@@ -11,24 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      RendezVous.belongsTo(models.Animal, {
-        foreignKey: 'id',
-        as: 'rendezVous',
-        constraints: false
-      });
+      RendezVous.belongsTo(models.Animal);
   
-      RendezVous.belongsTo(models.Professionnel, {
-        foreignKey: 'id',
-        as: 'rendezVousProfessionnel',
-        constraints: false
-      });
+      RendezVous.hasOne(models.Professionnel);
+      
     }
   };
   RendezVous.init({
     dateRendezVous: DataTypes.DATE,
     animalId: DataTypes.INTEGER,
     professionnelId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER
+    utilisateurId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'RendezVous',

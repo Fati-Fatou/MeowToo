@@ -38,18 +38,14 @@ module.exports = (sequelize, DataTypes) => {
 
       Animal.hasMany(models.Medicament);
 
-      Animal.belongsTo(models.Utilisateur, {
-        foreignKey: 'id',
-        as: 'utilisateur_id',
-        constraints: false
-      });
+      Animal.belongsTo(models.Utilisateur);
 
     }
   };
   Animal.init({
     nom: DataTypes.STRING,
     dateNaissance: DataTypes.DATE,
-    userId: DataTypes.INTEGER,
+    utilisateurId: DataTypes.INTEGER,
     espece: DataTypes.STRING,
     genre: DataTypes.STRING,
     race: DataTypes.STRING,

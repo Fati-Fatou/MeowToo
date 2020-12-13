@@ -11,11 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Vaccin.belongsTo(models.Animal, {
-        foreignKey: 'id',
-        as: 'animal_id',
-        constraints: false
-      });
+      Vaccin.belongsTo(models.Animal);
       
     }
   };

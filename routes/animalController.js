@@ -6,41 +6,6 @@ const models = require('../models');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
-router.get('/myAnimals', (req, res) => {
-    // Get Auth Header
-    var headerAuth = req.headers['authorization'];
-    var userId = jwtUtils.getUserId(headerAuth);
-
-    if (userId < 0) {
-        return res.status(400).json({ 'error': 'Wrong Token' });
-    }
-
-    models.Animal.findAll({
-        where: { userId: userId }
-    }).then(function (myAnimalsList) {
-        return res.status(200).json(myAnimalsList)
-    }).catch(function (error) {
-        return res.status(400).json({ 'error': error + ' Echec récuperation des animaux' });
-    });
-});
-
-router.get('/:idAnimal', (req, res) => {
-    // Param
-    var pIdAnimal = req.params.idAnimal;
-
-    models.Animal.findOne({
-        where: { id: pIdAnimal }
-    }).then(function (animalFound) {
-        if(animalFound) {
-            return res.status(200).json(animalFound);
-        } else {
-            return res.status(400).json({ 'Error': ' Animal absent de la base de données' });
-        }
-    }).catch(function (error) {
-        return res.status(500).json({ 'Error': error + ' Récupération de l\'animal impossible' });
-    });
-});
-
 router.post('/new', upload.single('image'), (req, res) => {
     // Get Auth Header
     var headerAuth = req.headers['authorization'];
@@ -53,17 +18,62 @@ router.post('/new', upload.single('image'), (req, res) => {
     models.Animal.create({
         nom: req.body.nom,
         dateNaissance: req.body.dateNaissance,
-        userId: userId,
+        utilisateurId: userId,
         espece: req.body.espece,
         genre: req.body.genre,
         race: req.body.race,
         image: req.file
     }).then(function (newAnimal) {
-        return res.status(201).json(newAnimal.nom);
+        return res.status(201).json(newAnimal);
     }).catch(function (error) {
         return res.status(500).json(({ 'error': error + ' Echec ajout nouvel animal' }));
     });
 });
+
+router.get('/', (req, res) => {
+    // Get Auth Header
+    var headerAuth = req.headers['authorization'];
+    var userId = jwtUtils.getUserId(headerAuth);
+
+    if (userId < 0) {
+        return res.status(400).json({ 'error': 'Wrong Token' });
+    }
+
+    models.Animal.findAll({
+        where: { utilisateurId: userId },
+        include: [{
+            model: models.Utilisateur,
+            attributes: [ 'id', 'nom', 'prenom'],
+        }] 
+    }).then(function (myAnimalsList) {
+        return res.status(200).json(myAnimalsList)
+    }).catch(function (error) {
+        return res.status(500).json({ 'error': error + ' Echec récuperation des animaux' });
+    });
+});
+
+router.get('/:idAnimal', (req, res) => {
+    // Param
+    var pIdAnimal = req.params.idAnimal;
+
+    models.Animal.findOne({
+        where: { id: pIdAnimal },
+        include: [{
+            model: models.Utilisateur,
+            attributes: [ 'id', 'nom', 'prenom'],
+        }] 
+    }).then(function (animalFound) {
+        if(animalFound) {
+            return res.status(200).json(animalFound);
+        } else {
+            return res.status(400).json({ 'Error': ' Animal absent de la base de données' });
+        }
+    }).catch(function (error) {
+        return res.status(500).json({ 'Error': error + ' Récupération de l\'animal impossible' });
+    });
+});
+
+
 
 router.patch('/:animalId', upload.single('image'), (req, res) => {
     // Param

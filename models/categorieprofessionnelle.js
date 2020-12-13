@@ -11,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      CategorieProfessionnelle.hasOne(models.Professionnel);
     }
+    
   };
   CategorieProfessionnelle.init({
     libelle: DataTypes.STRING

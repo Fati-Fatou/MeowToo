@@ -23,13 +23,14 @@ module.exports = {
       codePostal: {
         type: Sequelize.INTEGER
       },
-      userId: {
+      utilisateurId: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
           model: 'Utilisateurs',
           key: 'id'
-        }
+        },
+        allowNull: false
       },
       categorieProId: {
         type: Sequelize.INTEGER,
