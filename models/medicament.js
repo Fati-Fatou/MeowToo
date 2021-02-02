@@ -15,11 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 
       Medicament.hasMany(models.Event);
 
-      Medicament.hasMany(models.TypeRappel, {
-        foreignKey: 'id',
-        onDelete: 'SE NULL',
-        hooks: true
-      });
+      Medicament.belongsTo(models.TypeRappel);
       
     }
   };

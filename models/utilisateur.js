@@ -13,11 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Utilisateur.hasMany(models.Animal);
 
-      Utilisateur.hasMany(models.Professionnel, {
-        foreignKey: 'id',
-        onDelete: 'SET NULL',
-        hooks: true
-      });
+      Utilisateur.hasMany(models.Professionnel);
       
     }
   };
