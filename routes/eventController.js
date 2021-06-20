@@ -85,7 +85,7 @@ router.delete('/:idEvent', (req, res) => {
                 return res.status(500).json({ 'Error ': error + ' Suppression de l\'évènement impossible.' });
              })
         } else {
-            return res.status(400).json({ 'Error ': ' L\'évènement n\'est pas dans la base de données.' });
+            return res.status(404).json({ 'Error ': ' L\'évènement n\'est pas dans la base de données.' });
         }
     }).catch(function (error) {
         return res.status(500).json({ 'Error ': error + ' Recherche de l\'évènement impossible.' });

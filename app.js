@@ -1,11 +1,10 @@
 // Imports
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
 
-const animalRoutes = require('./routes/animalController');
+const animalRoutes = require('./routes/animals');
 const userRoutes = require('./routes/userController');
 const poidsRoutes = require('./routes/poidsController');
 const categorieProRoutes = require('./routes/categorieProController');
@@ -17,21 +16,33 @@ const medicament = require('./routes/medicamentController');
 const event = require('./routes/eventController');
 
 
-// Body parser config
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    if (req.method === "OPTIONS") {
+      res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+      return res.status(200).json({});
+    }
+    next();
+});
 
 // Routes
-app.use('/user', userRoutes);
-app.use('/animal', animalRoutes);
+app.use('/users', userRoutes);
+app.use('/animals', animalRoutes);
 app.use('/poids', poidsRoutes);
-app.use('/categorieProfessionnelle', categorieProRoutes);
-app.use('/professionnel', professionnelRoutes);
+app.use('/categoriesProfessionnelles', categorieProRoutes);
+app.use('/professionnels', professionnelRoutes);
 app.use('/rendezVous', rendezVous);
-app.use('/vaccin', vaccin);
-app.use('/vermifuge', vermifuge);
-app.use('/medicament', medicament);
-app.use('/event', event);
+app.use('/vaccins', vaccin);
+app.use('/vermifuges', vermifuge);
+app.use('/medicaments', medicament);
+app.use('/events', event);
 
 // for parsing multipart/form-data
 app.use(upload.none()); 

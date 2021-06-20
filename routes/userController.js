@@ -37,7 +37,7 @@ router.post('/register', (req, res) => {
             if (!userFound) {
 
                 bcrypt.hash(password, 5, function (err, bycryptedPassword) {
-                    var newUser = models.Utilisateur.create({
+                    let newUser = models.Utilisateur.create({
                         nom: nom,
                         prenom: prenom,
                         email: email,
@@ -84,7 +84,6 @@ router.post('/login', (req, res) => {
                             'token': jwtUtils.generateTokenForUser(userFound)
                         });
                     } else {
-                        console.log('DEBUG ' + userFound.password);
                         return res.status(403).json({ 'error': 'password invalide' });
                     }
                 });
@@ -102,7 +101,7 @@ router.get('/getUserProfile', (req, res) => {
     // Get Auth Header
     var headerAuth = req.headers['authorization'];
     var userId = jwtUtils.getUserId(headerAuth);
-
+    console.log(headerAuth)
     if (userId < 0) {
         return res.status(400).json({ 'error': 'Wrong Token' });
     }
@@ -243,8 +242,8 @@ router.patch('/:idUser', (req, res) => {
         } else {
             return res.status(400).json({ 'Error:': ' Utilisateur non trouvé dans la base de donnée OU non admin' });
         }
-    }).catch(function (errror) {
-        return res.status(400).json({ 'Error:': ' Vérification de l\'utilisateur impossible' });
+    }).catch(function (error) {
+        return res.status(400).json({ 'Error:': error + 'Vérification de l\'utilisateur impossible' });
     });
 });
 
