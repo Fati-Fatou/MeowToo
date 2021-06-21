@@ -1,26 +1,15 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Events', {
+    await queryInterface.createTable('ProfessionalCategories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      medicamentId: {
-        type: Sequelize.INTEGER,
-        foreignKey: true,
-        references: {
-          model: 'Medicaments',
-          key: 'id'
-        }
-      },
-      dateHeureRappel: {
-        type: Sequelize.DATE
-      },
-      statut: {
-        type: Sequelize.BOOLEAN
+      libelle: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -33,6 +22,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Events');
+    await queryInterface.dropTable('ProfessionalCategories');
   }
 };

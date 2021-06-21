@@ -36,7 +36,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
-          model: 'CategorieProfessionnelles',
+          model: 'ProfessionalCategories',
           key: 'id'
         }
       },

@@ -7,13 +7,12 @@ const upload = multer();
 const animalRoutes = require('./routes/animals');
 const userRoutes = require('./routes/userController');
 const poidsRoutes = require('./routes/poidsController');
-const categorieProRoutes = require('./routes/categorieProController');
+const categorieProRoutes = require('./routes/professionalCategories');
 const professionnelRoutes = require('./routes/professionnelController');
 const rendezVous = require('./routes/rendezVousController');
 const vaccin = require('./routes/vaccinController');
 const vermifuge = require('./routes/vermifugeController');
-const medicament = require('./routes/medicamentController');
-const event = require('./routes/eventController');
+const treatmentsRoutes = require('./routes/treatments');
 
 
 app.use(express.json());
@@ -41,8 +40,7 @@ app.use('/professionnels', professionnelRoutes);
 app.use('/rendezVous', rendezVous);
 app.use('/vaccins', vaccin);
 app.use('/vermifuges', vermifuge);
-app.use('/medicaments', medicament);
-app.use('/events', event);
+app.use('/treatments', treatmentsRoutes);
 
 // for parsing multipart/form-data
 app.use(upload.none()); 

@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
 
       Animal.hasMany(models.Vaccin);
 
-      Animal.hasMany(models.Medicament);
+      Animal.hasMany(models.Treatment);
 
       Animal.belongsTo(models.Utilisateur);
 
