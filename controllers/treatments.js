@@ -69,52 +69,65 @@ exports.treatments_get_treatment = async (req, res) => {
 
 exports.treatments_update_treatment = async (req, res) => {
 
-    // TODO : change attributs
-    let idTreatment = req.params.idTreatment;
-    let pMedicamentId = req.body.medicamentId;
-    let pDatHeureRappel = req.body.dateHeureRappel;
-    let pStatut = req.body.statut;
+    let headerAuth = req.headers['authorization'];
+    let userId = jwtUtils.getUserId(headerAuth);
 
-    models.Event.findOne({
-        where: { id: idTreatment }
-    }).then(function (eventFound) {
-        if (eventFound) {
-             eventFound.update({
-                medicamentId: (pMedicamentId ? pMedicamentId : eventFound.medicamentId),
-                dateHeureRappel: (pDatHeureRappel ? pDatHeureRappel : eventFound.dateHeureRappel),
-                statut: (pStatut ? pStatut : eventFound.statut)
-             }).then(function (eventUpdated) {
-                return res.status(200).json(eventUpdated);
-             }).catch(function (error) {
-                return res.status(500).json({ 'Error ': error + ' Mis à jour de l\'évènement impossible.' });
+    if (userId < 0) {
+        return res.status(400).json({ 'error': 'Wrong Token' });
+    } 
+
+    let idTreatment = req.params.idTreatment;
+    let medication = req.body.medication;
+    let startDate = req.body.startDate;
+    let endDate = req.body.endDate;
+    let timesPerDay = req.body.timesPerDay;
+    let statut = req.body.status;
+
+    try {
+        const treatmentFound = await models.Treatment.findOne({
+            where: { id: idTreatment }
+        });
+
+        try {
+            const treatmentUpdated = await models.Treatment.update({
+                medication: (medication ? medication : treatmentFound.medicamentId),
+                startDate: (startDate ? startDate : treatmentFound.startDate),
+                endDate: (endDate ? endDate : treatmentFound.endDate),
+                timesPerDay: (timesPerDay ? timesPerDay : treatmentFound.endDate),
+                statut: (statut ? statut : treatmentFound.statut)
              });
-        } else {
-            return res.status(400).json({ 'Error ': ' L\'évènement n\'est pas dans la base de données.' });
+             return res.status(200).json(treatmentUpdated);
+        } catch (e) {
+            return res.status(400).json({ 'status': 400, message: e.message });
         }
-    }).catch(function (error) {
-        return res.status(500).json({ 'Error ': error + ' Recherche de l\'évènement impossible.' });
-    });
+    } catch (e) {
+        return res.status(400).json({ 'status': 400, message: e.message });
+    }
 }
 
 exports.treatments_delete_treatment = async  (req, res) => {
 
-    let idTreatment = req.params.idTreatment;
+    let headerAuth = req.headers['authorization'];
+    let userId = jwtUtils.getUserId(headerAuth);
 
-    models.Event.findOne({
-        where: { id: idTreatment }
-    }).then(function (eventFound) {
-        if (eventFound) {
-             eventFound.destroy({
-             }).then(function (eventDeletd) {
-                return res.status(200).json(eventDeletd);
-             }).catch(function (error) {
-                return res.status(500).json({ 'Error ': error + ' Suppression de l\'évènement impossible.' });
-             })
-        } else {
-            return res.status(404).json({ 'Error ': ' L\'évènement n\'est pas dans la base de données.' });
+    if (userId < 0) {
+        return res.status(400).json({ 'error': 'Wrong Token' });
+    } 
+
+    try {
+        const treatmentFound = await   models.Treatment.findOne({
+            where: { id: req.params.idTreatment }
+        });
+        try {
+            const treatmentDeleted = models.Treatment.destroy({
+                where : {id: treatmentFound.id}
+            });
+            return res.status(200).json(treatmentDeleted);
+        } catch (e) {
+            return res.status(400).json({ 'status': 400, message: e.message });
         }
-    }).catch(function (error) {
-        return res.status(500).json({ 'Error ': error + ' Recherche de l\'évènement impossible.' });
-    });
+    } catch (e) {
+        return res.status(400).json({ 'status': 400, message: e.message });
+    }
 }
 
