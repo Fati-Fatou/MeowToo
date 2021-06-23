@@ -14,5 +14,4 @@ router.patch('/:idTreatment', treatmentsController.treatments_update_treatment);
 
 router.delete('/:idTreatment', treatmentsController.treatments_delete_treatment);
 
-
 module.exports = router;

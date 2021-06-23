@@ -6,8 +6,8 @@ const upload = multer();
 
 const animalRoutes = require('./routes/animals');
 const userRoutes = require('./routes/userController');
-const poidsRoutes = require('./routes/poidsController');
-const categorieProRoutes = require('./routes/professionalCategories');
+const weightRoutes = require('./routes/weight');
+const professionalCategoriesRoutes = require('./routes/professionalCategories');
 const professionnelRoutes = require('./routes/professionnelController');
 const rendezVous = require('./routes/rendezVousController');
 const vaccin = require('./routes/vaccinController');
@@ -33,9 +33,9 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/users', userRoutes);
-app.use('/animals', animalRoutes);
-app.use('/poids', poidsRoutes);
-app.use('/categoriesProfessionnelles', categorieProRoutes);
+app.use('/animaux', animalRoutes);
+app.use('/poids', weightRoutes);
+app.use('/categoriesProfessionnelles', professionalCategoriesRoutes);
 app.use('/professionnels', professionnelRoutes);
 app.use('/rendezVous', rendezVous);
 app.use('/vaccins', vaccin);

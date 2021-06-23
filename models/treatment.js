@@ -16,8 +16,10 @@ module.exports = (sequelize, DataTypes) => {
 
   };
   Treatment.init({
-    medicamentId: DataTypes.INTEGER,
-    dateHeureRappel: DataTypes.DATE,
+    medication: DataTypes.INTEGER,
+    startDate: DataTypes.DATE,
+    endDate: DataTypes.DATE,
+    timesPerDay: DataTypes.INTEGER,
     statut: DataTypes.BOOLEAN
   }, {
     sequelize,

@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Poids extends Model {
+  class Weight extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,17 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Poids.belongsTo(models.Animal);
+      Weight.belongsTo(models.Animal);
     }
 
   };
-  Poids.init({
+  Weight.init({
     animalId: DataTypes.INTEGER,
-    poids: DataTypes.INTEGER,
-    datePesee: DataTypes.DATE
+    weight: DataTypes.INTEGER,
+    weighingDate: DataTypes.DATE
   }, {
     sequelize,
-    modelName: 'Poids',
+    modelName: 'Weight',
   });
-  return Poids;
+  return Weight;
 };

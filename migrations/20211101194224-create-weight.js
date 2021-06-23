@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Poids', {
+    await queryInterface.createTable('Weight', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,11 +15,11 @@ module.exports = {
           key: 'id'
         }
       },
-      poids: {
+      weight: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      datePesee: {
+      weighingDate: {
         allowNull: false,
         type: Sequelize.DATE
       },
@@ -34,6 +34,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Poids');
+    await queryInterface.dropTable('Weight');
   }
 };
