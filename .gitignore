@@ -116,5 +116,4 @@ dist
 .pnp.*
 
 #utils
-utils/
-    jwt.utils.js
+utils/*
