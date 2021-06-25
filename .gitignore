@@ -117,3 +117,4 @@ dist
 
 #utils
 utils/
+    jwt.utils.js
