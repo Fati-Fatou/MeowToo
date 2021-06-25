@@ -18,6 +18,6 @@ router.patch('/:idUser', userController.user_update_user_by_id);
 
 router.delete('/', userController.user_delete_current_user);
 
-router.delete('/:id', userController.user_delete_user_by_id);
+router.delete('/:idUser', userController.user_delete_user_by_id);
 
 module.exports = router;
