@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       
       Professional.belongsTo(models.ProfessionalCategory);
 
-      Professional.belongsTo(models.Utilisateur);
+      Professional.belongsTo(models.User);
 
     }
   };

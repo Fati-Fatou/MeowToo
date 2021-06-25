@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
 
       Animal.hasMany(models.Treatment);
 
-      Animal.belongsTo(models.Utilisateur);
+      Animal.belongsTo(models.User);
 
     }
   };
