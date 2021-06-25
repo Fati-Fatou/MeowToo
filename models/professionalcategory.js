@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      ProfessionalCategory.hasMany(models.Professionnel);
+      ProfessionalCategory.hasMany(models.Professional);
     }
     
   };

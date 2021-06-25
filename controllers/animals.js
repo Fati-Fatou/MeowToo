@@ -27,7 +27,7 @@ exports.animals_create_animal = async (req, res) => {
 }
 
 exports.animals_get_all = async (req, res) => {
-    // Get Auth Header
+
     let headerAuth = req.headers['authorization'];
     let userId = jwtUtils.getUserId(headerAuth);
 

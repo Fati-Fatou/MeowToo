@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Professionnels', {
+    await queryInterface.createTable('Professionals', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -23,7 +23,7 @@ module.exports = {
       codePostal: {
         type: Sequelize.INTEGER
       },
-      utilisateurId: {
+      userID: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
@@ -32,7 +32,7 @@ module.exports = {
         },
         allowNull: false
       },
-      categorieProId: {
+      professionalCategoryID: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
@@ -51,6 +51,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Professionnels');
+    await queryInterface.dropTable('Professionals');
   }
 };

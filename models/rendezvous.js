@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       RendezVous.belongsTo(models.Animal);
   
-      RendezVous.hasOne(models.Professionnel);
+      RendezVous.hasOne(models.Professional);
       
     }
   };

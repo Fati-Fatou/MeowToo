@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Utilisateur.hasMany(models.Animal);
 
-      Utilisateur.hasMany(models.Professionnel);
+      Utilisateur.hasMany(models.Professional);
       
     }
   };
