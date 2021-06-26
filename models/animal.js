@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
       Animal.hasMany(models.Weight);
         
-      Animal.hasMany(models.RendezVous);
+      Animal.hasMany(models.Appointment);
 
       Animal.hasMany(models.Vermifuge);
 

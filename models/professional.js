@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Professional.belongsTo(models.RendezVous);
+      Professional.belongsTo(models.Appointment);
       
       Professional.belongsTo(models.ProfessionalCategory);
 

@@ -1,17 +1,17 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('RendezVous', {
+    await queryInterface.createTable('Appointment', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      dateRendezVous: {
+      appointmentDate: {
         type: Sequelize.DATE
       },
-      animalId: {
+      animalID: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
@@ -20,7 +20,7 @@ module.exports = {
         },
         allowNull: false
       },
-      professionnelId: {
+      professionalID: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
@@ -29,7 +29,7 @@ module.exports = {
         },
         allowNull: false
       },
-      utilisateurId: {
+      userID: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
@@ -49,6 +49,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('RendezVous');
+    await queryInterface.dropTable('Appointment');
   }
 };

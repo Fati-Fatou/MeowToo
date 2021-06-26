@@ -1,15 +1,14 @@
-// Imports
 const express = require('express');
 const app = express();
 const multer = require('multer');
 const upload = multer();
 
-const animalRoutes = require('./routes/animals');
-const userRoutes = require('./routes/userController');
-const weightRoutes = require('./routes/weight');
+const animalsRoutes = require('./routes/animals');
+const usersRoutes = require('./routes/user');
+const weightsRoutes = require('./routes/weight');
 const professionalCategoriesRoutes = require('./routes/professionalCategories');
-const professionnelRoutes = require('./routes/professional');
-const rendezVous = require('./routes/rendezVousController');
+const professionalsRoutes = require('./routes/professional');
+const appointmentsRoutes = require('./routes/appointment');
 const vaccin = require('./routes/vaccinController');
 const vermifuge = require('./routes/vermifugeController');
 const treatmentsRoutes = require('./routes/treatments');
@@ -32,12 +31,12 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use('/users', userRoutes);
-app.use('/animaux', animalRoutes);
-app.use('/poids', weightRoutes);
-app.use('/categoriesProfessionnelles', professionalCategoriesRoutes);
-app.use('/professionnels', professionnelRoutes);
-app.use('/rendezVous', rendezVous);
+app.use('/users', usersRoutes);
+app.use('/animaux', animalsRoutes);
+app.use('/poids', weightsRoutes);
+app.use('/professionalCategories', professionalCategoriesRoutes);
+app.use('/professionals', professionalsRoutes);
+app.use('/appointments', appointmentsRoutes);
 app.use('/vaccins', vaccin);
 app.use('/vermifuges', vermifuge);
 app.use('/treatments', treatmentsRoutes);

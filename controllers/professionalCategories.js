@@ -3,6 +3,13 @@ const jwtUtils = require('../utils/jwt.utils');
 
 exports.professional_categories_create = async (req, res) => {
 
+    let headerAuth = req.headers['authorization'];
+    let userId = jwtUtils.getUserId(headerAuth);
+
+    if (userId < 0) {
+        return res.status(400).json({ 'error': 'Wrong Token' });
+    }
+
     try {
         const category = await models.CategorieProfessionnelle.create({
             libelle: req.body.libelle
@@ -15,6 +22,13 @@ exports.professional_categories_create = async (req, res) => {
 
 exports.professional_categories_get_all = async (req, res) => {
 
+    let headerAuth = req.headers['authorization'];
+    let userId = jwtUtils.getUserId(headerAuth);
+
+    if (userId < 0) {
+        return res.status(400).json({ 'error': 'Wrong Token' });
+    }
+
     try {
         const categories = await models.CategorieProfessionnelle.findAll();
         return res.status(200).json(categories);
@@ -24,6 +38,13 @@ exports.professional_categories_get_all = async (req, res) => {
 }
 
 exports.professional_categories_get_category = async (req, res) => {
+
+    let headerAuth = req.headers['authorization'];
+    let userId = jwtUtils.getUserId(headerAuth);
+
+    if (userId < 0) {
+        return res.status(400).json({ 'error': 'Wrong Token' });
+    }
 
     try {
         const categoryFound = await models.CategorieProfessionnelle.findOne({
@@ -36,6 +57,13 @@ exports.professional_categories_get_category = async (req, res) => {
 }
 
 exports.professional_categories_update_category = async (req, res) => {
+
+    let headerAuth = req.headers['authorization'];
+    let userId = jwtUtils.getUserId(headerAuth);
+
+    if (userId < 0) {
+        return res.status(400).json({ 'error': 'Wrong Token' });
+    }
 
     let idCategorieProParam = req.params.idCategoriePro;
     let libelle = req.body.libelle;
@@ -59,10 +87,8 @@ exports.professional_categories_update_category = async (req, res) => {
 
 exports.professional_categories_delete_category = async (req, res) => {
 
-    var idCategorieProParam = req.params.idCategoriePro;
-    // Get Auth Header
-    var headerAuth = req.headers['authorization'];
-    var userId = jwtUtils.getUserId(headerAuth);
+    let headerAuth = req.headers['authorization'];
+    let userId = jwtUtils.getUserId(headerAuth);
 
     if (userId < 0) {
         return res.status(400).json({ 'error': 'Wrong Token' });
@@ -76,7 +102,7 @@ exports.professional_categories_delete_category = async (req, res) => {
 
             try {
                 const categoryToDelete = await models.CategorieProfessionnelle.findOne({
-                    where: { id: idCategorieProParam }
+                    where: { id: req.params.idCategoriePro }
                 });
                 try {
                     const categoryDeleted = await models.CategorieProfessionnelle.destroy({
