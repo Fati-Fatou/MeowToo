@@ -11,14 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Vaccin.belongsTo(models.Animal);
+      Vaccin.belongsTo(models.Pet);
       
     }
   };
   Vaccin.init({
     dateVaccin: DataTypes.DATE,
     dateProchainVaccin: DataTypes.DATE,
-    animalId: DataTypes.INTEGER,
+    petID: DataTypes.INTEGER,
     statut: DataTypes.BOOLEAN
   }, {
     sequelize,

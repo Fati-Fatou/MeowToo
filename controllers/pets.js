@@ -1,7 +1,7 @@
 const models = require('../models');
 const jwtUtils = require('../utils/jwt.utils');
 
-exports.animals_create_animal = async (req, res) => {
+exports.pets_create_pet = async (req, res) => {
     // Get Auth Header
     let headerAuth = req.headers['authorization'];
     let userId = jwtUtils.getUserId(headerAuth);
@@ -11,7 +11,7 @@ exports.animals_create_animal = async (req, res) => {
     } 
 
     try {
-        const animalCreated = await models.Animal.create({
+        const petCreated = await models.pet.create({
             nom: req.body.nom,
             dateNaissance: req.body.dateNaissance,
             utilisateurId: userId,
@@ -20,13 +20,13 @@ exports.animals_create_animal = async (req, res) => {
             race: req.body.race,
             image: req.file
         });
-        return res.status(200).json(animalCreated);
+        return res.status(200).json(petCreated);
     } catch (e){
         return res.status(400).json({ 'status': 400, message: e.message });
     }
 }
 
-exports.animals_get_all = async (req, res) => {
+exports.pets_get_all = async (req, res) => {
 
     let headerAuth = req.headers['authorization'];
     let userId = jwtUtils.getUserId(headerAuth);
@@ -36,38 +36,38 @@ exports.animals_get_all = async (req, res) => {
     }
 
     try {
-        const animals = await models.Animal.findAll({
+        const pets = await models.pet.findAll({
             where: { utilisateurId: userId },
             include: [{
                 model: models.Utilisateur,
                 attributes: [ 'id', 'nom', 'prenom'],
             }] 
         });
-        return res.status(200).json(animals);
+        return res.status(200).json(pets);
     } catch (e){
         return res.status(400).json({ 'status': 400, message: e.message });
     }
 }
 
-exports.animals_get_animal = async (req, res) => {
-    let pIdAnimal = req.params.idAnimal;
+exports.pets_get_pet = async (req, res) => {
+    let pIdPet = req.params.idPet;
 
     try {
-        const animalFound = await models.Animal.findOne({
-            where: { id: pIdAnimal },
+        const petFound = await models.pet.findOne({
+            where: { id: pIdPet },
             include: [{
                 model: models.Utilisateur,
                 attributes: [ 'id', 'nom', 'prenom'],
             }] 
         });
-        return res.status(200).json(animalFound);
+        return res.status(200).json(petFound);
     } catch (e) {
         return res.status(400).json({ 'status': 400, message: e.message });
     }
 }
 
-exports.animals_update_animal = async (req, res) => {
-    let animalId = req.params.animalId;
+exports.pets_update_pet = async (req, res) => {
+    let idPet = req.params.idPet;
     let pNom = req.body.nom;
     let pDateNaissance = req.body.dateNaissance;
     let pEspece = req.body.espece;
@@ -84,22 +84,22 @@ exports.animals_update_animal = async (req, res) => {
     }
 
     try {
-        const animalFound = await models.Animal.findOne({
-            where: { id: animalId }
+        const petFound = await models.pet.findOne({
+            where: { id: idPet }
         });
 
         try {
-            const animalUpdated = await models.Animal.update({
-                nom: (pNom ? pNom : animalFound.nom),
-                dateNaissance: (pDateNaissance ? pDateNaissance : animalFound.dateNaissance),
-                espece: (pEspece ? pEspece : animalFound.espece),
-                genre: (pGenre ? pGenre : animalFound.genre),
-                race: (pRace ? pRace : animalFound.race),
-                image: (pImage ? pImage : animalFound.image)
+            const petUpdated = await models.pet.update({
+                nom: (pNom ? pNom : petFound.nom),
+                dateNaissance: (pDateNaissance ? pDateNaissance : petFound.dateNaissance),
+                espece: (pEspece ? pEspece : petFound.espece),
+                genre: (pGenre ? pGenre : petFound.genre),
+                race: (pRace ? pRace : petFound.race),
+                image: (pImage ? pImage : petFound.image)
             }, {
-                where: { id: animalFound.id }
+                where: { id: petFound.id }
             });
-            return res.status(200).json(animalUpdated);
+            return res.status(200).json(petUpdated);
         } catch (e) {
             return res.status(400).json({ 'status': 400, message: e.message });
         }
@@ -108,9 +108,9 @@ exports.animals_update_animal = async (req, res) => {
     }
 }
 
-exports.animals_delete_animal = async (req, res) => {
+exports.pets_delete_pet = async (req, res) => {
     // Param
-    let animalId = req.params.animalId;
+    let idPet = req.params.idPet;
     // Get Auth Header
     let headerAuth = req.headers['authorization'];
     let userId = jwtUtils.getUserId(headerAuth);
@@ -120,15 +120,15 @@ exports.animals_delete_animal = async (req, res) => {
     }
 
     try {
-        const animalFound = await models.Animal.findOne({
-            where: { id: animalId }
+        const petFound = await models.pet.findOne({
+            where: { id: idPet }
         });
 
         try {
-            const animalDeleted = await models.Animal.destroy({
-                where: { id: animalFound.id }
+            const petDeleted = await models.pet.destroy({
+                where: { id: petFound.id }
             });
-            return res.status(200).json(animalDeleted);
+            return res.status(200).json(petDeleted);
         } catch (e) {
             return res.status(400).json({ 'status': 400, message: e.message });
         }

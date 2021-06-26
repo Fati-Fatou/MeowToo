@@ -3,7 +3,7 @@ const app = express();
 const multer = require('multer');
 const upload = multer();
 
-const animalsRoutes = require('./routes/animals');
+const animalsRoutes = require('./routes/pets');
 const usersRoutes = require('./routes/user');
 const weightsRoutes = require('./routes/weight');
 const professionalCategoriesRoutes = require('./routes/professionalCategories');

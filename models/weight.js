@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Weight.belongsTo(models.Animal);
+      Weight.belongsTo(models.Pet);
     }
 
   };
   Weight.init({
-    animalId: DataTypes.INTEGER,
+    petID: DataTypes.INTEGER,
     weight: DataTypes.INTEGER,
     weighingDate: DataTypes.DATE
   }, {

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Appointment.belongsTo(models.Animal);
+      Appointment.belongsTo(models.Pet);
   
       Appointment.hasOne(models.Professional);
       
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   Appointment.init({
     dateRendezVous: DataTypes.DATE,
-    animalId: DataTypes.INTEGER,
+    petID: DataTypes.INTEGER,
     professionnelId: DataTypes.INTEGER,
     utilisateurId: DataTypes.INTEGER
   }, {
