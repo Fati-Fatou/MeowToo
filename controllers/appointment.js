@@ -1,16 +1,6 @@
-const jwtUtils = require('../utils/jwt.utils');
 const models = require('../models');
-const app = require('../app');
 
 exports.appointments_create_appointment = async (req, res) => {
-
-    let headerAuth = req.headers['authorization'];
-    let userId = jwtUtils.getUserId(headerAuth);
-
-    if (userId < 0) {
-        return res.status(400).json({ 'error': 'Wrong Token' });
-    }
-
     let pAppointmentDate = req.body.dateRendezVous;
     let pAnimalId = req.body.animalId;
     let pProfessionalId = req.body.professionnelId;
@@ -26,17 +16,9 @@ exports.appointments_create_appointment = async (req, res) => {
     } catch (e) {
         return res.status(400).json({ 'status': 400, message: e.message });
     }
-}
+};
 
 exports.appointments_get_appointments_by_animal = async (req, res) => {
-
-    let headerAuth = req.headers['authorization'];
-    let userId = jwtUtils.getUserId(headerAuth);
-
-    if (userId < 0) {
-        return res.status(400).json({ 'error': 'Wrong Token' });
-    }
-
     try {
         const appointments = await models.Appointment.findAll({
             where: { animalId: req.params.idAnimal }
@@ -45,17 +27,9 @@ exports.appointments_get_appointments_by_animal = async (req, res) => {
     } catch (e) {
         return res.status(400).json({ 'status': 400, message: e.message });
     }
-}
+};
 
 exports.appointments_get_all = async (req, res) => {
-
-    let headerAuth = req.headers['authorization'];
-    let userId = jwtUtils.getUserId(headerAuth);
-
-    if (userId < 0) {
-        return res.status(400).json({ 'error': 'Wrong Token' });
-    }
-
     try {
         const appointments = await models.Appointment.findAll({
             where: { userID: pUserId }
@@ -64,17 +38,9 @@ exports.appointments_get_all = async (req, res) => {
     } catch (e) {
         return res.status(400).json({ 'status': 400, message: e.message });
     }
-}
+};
 
 exports.appointments_get_appointment = async (req, res) => {
-
-    let headerAuth = req.headers['authorization'];
-    let userId = jwtUtils.getUserId(headerAuth);
-
-    if (userId < 0) {
-        return res.status(400).json({ 'error': 'Wrong Token' });
-    }
-
     try {
         const appointmentFound = await models.Appointment.findOne({
             where: { id: req.params.idAppointment }
@@ -83,17 +49,9 @@ exports.appointments_get_appointment = async (req, res) => {
     } catch (e) {
         return res.status(400).json({ 'status': 400, message: e.message });
     }
-}
+};
 
 exports.appointments_update_appointment = async  (req, res) => {
-
-    let headerAuth = req.headers['authorization'];
-    let userId = jwtUtils.getUserId(headerAuth);
-
-    if (userId < 0) {
-        return res.status(400).json({ 'error': 'Wrong Token' });
-    }
-
     let pIdAppointment = req.params.idAppointment;
     let pAppointmentDate = req.body.appointmentDate;
     let pAnimalID = req.body.animalID;
@@ -117,10 +75,9 @@ exports.appointments_update_appointment = async  (req, res) => {
     } catch (e) {
         return res.status(400).json({ 'status': 400, message: e.message });
     }
-}
+};
 
 exports.appointments_delete_appointment = async (req, res) => {
-
     try {
         const appointmentFound = await models.RendezVous.findOne({
             where: { id: req.params.idAppointment }
@@ -138,4 +95,4 @@ exports.appointments_delete_appointment = async (req, res) => {
     } catch (e) {
         return res.status(400).json({ 'status': 400, message: e.message });
     }
-}
+};

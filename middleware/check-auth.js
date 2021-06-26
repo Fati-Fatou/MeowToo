@@ -1,13 +1,10 @@
-const jwt = require('jsonwebtoken');
+const jwtUtils = require('../utils/jwt.utils');
 
-module.exports = (req, res, next) => {
-    try {
-        const decoded = jwt.verify(req.body.token, process.env.JWT_KEY);
-        req.userData = decoded;
-        next();
-    } catch(error) {
-        return res.status(401).json({
-            messate: 'Authentication failed"'
-        })
+module.exports = (req, res) => {
+    let headerAuth = req.headers['authorization'];
+    let userId = jwtUtils.getUserId(headerAuth);
+
+    if (userId < 0) {
+        return res.status(400).json({ 'error': 'Wrong Token' });
     }
 };

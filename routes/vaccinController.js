@@ -1,10 +1,10 @@
-// Imports
 const express = require('express');
 const router = express.Router();
 const models = require('../models');
+const checkAuth = require('../middleware/check-auth');
 
-router.post('/new', (req, res) => {
-    // Params
+router.post('/new', checkAuth, (req, res) => {
+
     var pDateVaccin = req.body.dateVaccin;
     var pDatedProchainVaccin = req.body.dateProchainVaccin;
     var pAnimalId = req.body.animalId;
