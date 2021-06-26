@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nom: {
+      name: {
         type: Sequelize.STRING
       },
       email: {
@@ -17,17 +17,17 @@ module.exports = {
       telephone: {
         type: Sequelize.INTEGER
       },
-      adresse: {
+      address: {
         type: Sequelize.STRING
       },
-      codePostal: {
+      zipCode: {
         type: Sequelize.INTEGER
       },
       userID: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
-          model: 'Utilisateurs',
+          model: 'Users',
           key: 'id'
         },
         allowNull: false

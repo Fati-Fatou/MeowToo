@@ -9,8 +9,8 @@ const weightsRoutes = require('./routes/weight');
 const professionalCategoriesRoutes = require('./routes/professionalCategories');
 const professionalsRoutes = require('./routes/professional');
 const appointmentsRoutes = require('./routes/appointment');
-const vaccin = require('./routes/vaccinController');
-const vermifuge = require('./routes/vermifugeController');
+const vaccinesRoutes = require('./routes/vaccine');
+const dewormersRoutes = require('./routes/dewormer');
 const treatmentsRoutes = require('./routes/treatments');
 
 
@@ -37,8 +37,8 @@ app.use('/poids', weightsRoutes);
 app.use('/professionalCategories', professionalCategoriesRoutes);
 app.use('/professionals', professionalsRoutes);
 app.use('/appointments', appointmentsRoutes);
-app.use('/vaccins', vaccin);
-app.use('/vermifuges', vermifuge);
+app.use('/vaccines', vaccinesRoutes);
+app.use('/dewormers', dewormersRoutes);
 app.use('/treatments', treatmentsRoutes);
 
 // for parsing multipart/form-data

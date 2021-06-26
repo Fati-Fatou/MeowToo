@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     
   };
   ProfessionalCategory.init({
-    libelle: DataTypes.STRING
+    name: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'ProfessionalCategory',

@@ -19,14 +19,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
-          model: 'Utilisateurs',
+          model: 'Users',
           key: 'id'
         }
       },
-      espece: {
+      species: {
         type: Sequelize.STRING
       },
-      genre: {
+      gender: {
         type: Sequelize.STRING
       },
       race: {

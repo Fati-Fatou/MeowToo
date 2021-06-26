@@ -12,7 +12,7 @@ exports.professional_categories_create = async (req, res) => {
 
     try {
         const category = await models.CategorieProfessionnelle.create({
-            libelle: req.body.libelle
+            name: req.body.name
         });
         return res.status(200).json(category);
     } catch (e) {
@@ -66,7 +66,7 @@ exports.professional_categories_update_category = async (req, res) => {
     }
 
     let idCategorieProParam = req.params.idCategoriePro;
-    let libelle = req.body.libelle;
+    let name = req.body.name;
 
     try {
         const categoryToUpdate = await models.CategorieProfessionnelle.findOne({
@@ -74,7 +74,7 @@ exports.professional_categories_update_category = async (req, res) => {
         });
         try {
             const categoryUpdated = await categoryToUpdate.update({
-                libelle: (libelle ? libelle : categoriesProFound.libelle)
+                name: (name ? name : categoriesProFound.name)
             });
             return res.status(200).json(categoryUpdated);
         } catch (e) {

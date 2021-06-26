@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
 
       Pet.hasMany(models.Weight);
       Pet.hasMany(models.Appointment);
-      Pet.hasMany(models.Vermifuge);
-      Pet.hasMany(models.Vaccin);
+      Pet.hasMany(models.Dewormer);
+      Pet.hasMany(models.Vaccine);
       Pet.hasMany(models.Treatment);
       Pet.belongsTo(models.User);
 

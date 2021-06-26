@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
-          model: 'Animals',
+          model: 'Pets',
           key: 'id'
         }
       },
@@ -28,7 +28,7 @@ module.exports = {
       timesPerDay: {
         type: Sequelize.INTEGER
       },
-      statut: {
+      status: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {

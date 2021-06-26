@@ -1,28 +1,28 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Vermifuges', {
+    await queryInterface.createTable('Vaccines', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      dateVermifuge: {
+      vaccineDate: {
         type: Sequelize.DATE
       },
-      dateProchainVermifuge: {
+      nextVaccineDate: {
         type: Sequelize.DATE
       },
-      animalId: {
+      petID: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
-          model: 'Animals',
+          model: 'Pets',
           key: 'id'
         }
       },
-      statut: {
+      status: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {
@@ -36,6 +36,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Vermifuges');
+    await queryInterface.dropTable('Vaccines');
   }
 };

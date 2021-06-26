@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     startDate: DataTypes.DATE,
     endDate: DataTypes.DATE,
     timesPerDay: DataTypes.INTEGER,
-    statut: DataTypes.BOOLEAN
+    status: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Treatment',

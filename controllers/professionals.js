@@ -12,11 +12,11 @@ exports.professionals_create = async (req, res) => {
 
     try {
         const professional = await models.Professional.create({
-            nom: req.body.nom,
+            name: req.body.name,
             email: req.body.email,
             telephone: req.body.telephone,
-            adresse: req.body.adresse,
-            codePostal: req.body.codePostal,
+            address: req.body.address,
+            zipCode: req.body.zipCode,
             userID: userID,
             professionalCategoryID: req.body.professionalCategoryID
         });
@@ -98,11 +98,11 @@ exports.professionals_update_professional = async (req, res) => {
     }
     
     let pIdPro = req.params.idProfessional;
-    let pNom = req.body.nom;
+    let pname = req.body.name;
     let pEmail = req.body.email;
     let pTelephone = req.body.telephone;
-    let pAdresse = req.body.adresse;
-    let pCodePostal = req.body.codePostal;
+    let pAddress = req.body.address;
+    let pZipCode = req.body.zipCode;
     let pProfessionalCetegoryID = req.body.professionalCategoryID;
 
     try {
@@ -112,11 +112,11 @@ exports.professionals_update_professional = async (req, res) => {
 
         try {
             const professionalUpdated = await professionalFound.update({
-                nom: (pNom ? pNom : professionalFound.nom),
+                name: (pname ? pname : professionalFound.name),
                 email: (pEmail ? pEmail : professionalFound.email),
                 telephone: (pTelephone ? pTelephone : professionalFound.telephone),
-                adresse: (pAdresse ? pAdresse : professionalFound.adress),
-                codePostal: (pCodePostal ? pCodePostal : professionalFound.codePostal),
+                address: (pAddress ? pAddress : professionalFound.adress),
+                zipCode: (pZipCode ? pZipCode : professionalFound.zipCode),
                 professionalCategoryID: (pProfessionalCetegoryID ? pProfessionalCetegoryID : professionalFound.professionalCategoryID)
             });
             return res.status(200).json(professionalUpdated);

@@ -11,11 +11,11 @@ module.exports = {
       appointmentDate: {
         type: Sequelize.DATE
       },
-      animalID: {
+      petID: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
-          model: 'Animals',
+          model: 'Pets',
           key: 'id'
         },
         allowNull: false
@@ -24,7 +24,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
-          model: 'Professionnels',
+          model: 'Professionals',
           key: 'id'
         },
         allowNull: false
@@ -33,7 +33,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
-          model: 'Utilisateurs',
+          model: 'Users',
           key: 'id'
         },
         allowNull: false
