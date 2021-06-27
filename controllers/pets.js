@@ -1,4 +1,5 @@
 /* eslint-disable prefer-destructuring */
+const moment = require('moment');
 const models = require('../models');
 const jwtUtils = require('../utils/jwt.utils');
 
@@ -11,12 +12,12 @@ exports.pets_create_pet = async (req, res) => {
   }
 
   try {
-    const petCreated = await models.pet.create({
-      nom: req.body.nom,
-      dateNaissance: req.body.dateNaissance,
-      utilisateurId: userId,
-      espece: req.body.espece,
-      genre: req.body.genre,
+    const petCreated = await models.Pet.create({
+      name: req.body.name,
+      dateOfBirth: req.body.dateOfBirth,
+      userID: userId,
+      species: req.body.species,
+      gender: req.body.gender,
       race: req.body.race,
       image: req.file,
     });
@@ -49,17 +50,25 @@ exports.pets_get_all = async (req, res) => {
 };
 
 exports.pets_get_pet = async (req, res) => {
-  const { pIdPet } = req.params;
+  const pIdPet = req.params.idPet;
 
   try {
-    const petFound = await models.pet.findOne({
+    const petFound = await models.Pet.findOne({
       where: { id: pIdPet },
-      include: [{
-        model: models.Utilisateur,
-        attributes: ['id', 'nom', 'prenom'],
-      }],
     });
-    return res.status(200).json(petFound);
+
+    const dateOfBirthFormat = moment(petFound.dateOfBirth).format('DD-MM-YYYY');
+
+    const render = {
+      name: petFound.name,
+      dateOfBirth: dateOfBirthFormat,
+      species: petFound.species,
+      gender: petFound.gender,
+      race: petFound.race,
+      image: petFound.image,
+    };
+
+    return res.status(200).json(render);
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
   }
@@ -83,12 +92,12 @@ exports.pets_update_pet = async (req, res) => {
   }
 
   try {
-    const petFound = await models.pet.findOne({
+    const petFound = await models.Pet.findOne({
       where: { id: idPet },
     });
 
     try {
-      const petUpdated = await models.pet.update({
+      const petUpdated = await models.Pet.update({
         nom: (pNom || petFound.nom),
         dateNaissance: (pDateNaissance || petFound.dateNaissance),
         espece: (pEspece || petFound.espece),
@@ -118,12 +127,12 @@ exports.pets_delete_pet = async (req, res) => {
   }
 
   try {
-    const petFound = await models.pet.findOne({
+    const petFound = await models.Pet.findOne({
       where: { id: idPet },
     });
 
     try {
-      const petDeleted = await models.pet.destroy({
+      const petDeleted = await models.Pet.destroy({
         where: { id: petFound.id },
       });
       return res.status(200).json(petDeleted);
