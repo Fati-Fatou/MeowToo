@@ -1,10 +1,11 @@
 const jwtUtils = require('../utils/jwt.utils');
 
+// eslint-disable-next-line consistent-return
 module.exports = (req, res) => {
-    let headerAuth = req.headers['authorization'];
-    let userId = jwtUtils.getUserId(headerAuth);
+  const headerAuth = req.headers.authorization;
+  const userId = jwtUtils.getUserId(headerAuth);
 
-    if (userId < 0) {
-        return res.status(400).json({ 'error': 'Wrong Token' });
-    }
+  if (userId < 0) {
+    return res.status(400).json({ error: 'Wrong Token' });
+  }
 };
