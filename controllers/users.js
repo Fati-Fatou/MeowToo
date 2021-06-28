@@ -9,8 +9,8 @@ const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
 // eslint-disable-next-line consistent-return
 exports.user_register = async (req, res) => {
-  const pFirstName = req.body.firstname;
-  const pLastName = req.body.lastname;
+  const pFirstName = req.body.firstName;
+  const pLastName = req.body.lastName;
   const pEmail = req.body.email;
   const pTelephone = req.body.telephone;
   const pPassword = req.body.password;
@@ -37,8 +37,8 @@ exports.user_register = async (req, res) => {
       (async () => {
         bcrypt.hash(pPassword, 5, (err, bycryptedPassword) => {
           const newUser = userService.register({
-            firstname: pFirstName,
-            lastname: pLastName,
+            firstName: pFirstName,
+            lastName: pLastName,
             email: pEmail,
             telephone: pTelephone,
             password: bycryptedPassword,
@@ -97,7 +97,7 @@ exports.user_get_user_profile = async (req, res) => {
 
   try {
     const userFound = await models.User.findOne({
-      attributes: ['id', 'firstname', 'lastname', 'email', 'telephone'],
+      attributes: ['id', 'firstName', 'lastName', 'email', 'telephone'],
       where: { id: userId },
     });
     return res.status(200).json(userFound);
@@ -130,8 +130,8 @@ exports.user_update_current_user = async (req, res) => {
     return res.status(400).json({ error: 'Wrong Token' });
   }
 
-  const pFirstname = req.body.firstname;
-  const pLastname = req.body.lastname;
+  const pFirstName = req.body.firstName;
+  const pLastName = req.body.lastName;
   const pEmail = req.body.email;
   const pTelephone = req.body.telephone;
   const pPassword = req.body.password;
@@ -143,8 +143,8 @@ exports.user_update_current_user = async (req, res) => {
 
     try {
       const userUpdated = await userFound.update({
-        firstName: (pFirstname || userFound.firstname),
-        lastName: (pLastname || userFound.lastname),
+        firstName: (pFirstName || userFound.firstName),
+        lastName: (pLastName || userFound.lastName),
         email: (pEmail || userFound.email),
         telephone: (pTelephone || userFound.telephone),
         password: (pPassword || userFound.password),
@@ -167,8 +167,8 @@ exports.user_update_user_by_id = async (req, res) => {
   }
 
   const idUserParam = req.params.idUser;
-  const pFirstname = req.body.firstname;
-  const pLastname = req.body.lastname;
+  const pFirstName = req.body.firstName;
+  const pLastName = req.body.lastName;
   const pEmail = req.body.email;
   const pTelephone = req.body.telephone;
   const pIsAdmin = req.body.isAdmin;
@@ -184,8 +184,8 @@ exports.user_update_user_by_id = async (req, res) => {
         });
         try {
           const userUpdated = await userToUpdate.update({
-            firstname: (pFirstname || userToUpdate.firstname),
-            lastname: (pLastname || userToUpdate.lastname),
+            firstName: (pFirstName || userToUpdate.firstName),
+            lastName: (pLastName || userToUpdate.lastName),
             email: (pEmail || userToUpdate.email),
             telephone: (pTelephone || userToUpdate.telephone),
             isAdmin: (pIsAdmin || userToUpdate.isAdmin),

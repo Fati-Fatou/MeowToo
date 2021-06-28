@@ -1,42 +1,33 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Appointments', {
+    await queryInterface.createTable('TreatmentReminders', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      appointmentDate: {
-        type: Sequelize.DATE
+      treatmentID: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        references: {
+          model: 'Treatments',
+          key: 'id',
+        },
+        allowNull: false
       },
       petID: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         references: {
           model: 'Pets',
-          key: 'id'
+          key: 'id',
         },
         allowNull: false
       },
-      professionalID: {
-        type: Sequelize.INTEGER,
-        foreignKey: true,
-        references: {
-          model: 'Professionals',
-          key: 'id'
-        },
-        allowNull: false
-      },
-      userID: {
-        type: Sequelize.INTEGER,
-        foreignKey: true,
-        references: {
-          model: 'Users',
-          key: 'id'
-        },
-        allowNull: false
+      remindeDate: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -49,6 +40,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Appointments');
+    await queryInterface.dropTable('TreatmentReminders');
   }
 };

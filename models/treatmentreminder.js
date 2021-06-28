@@ -1,10 +1,10 @@
 /* eslint-disable linebreak-style */
-'use strict';
 const {
-  Model
+  Model,
+// eslint-disable-next-line import/newline-after-import
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Appointment extends Model {
+  class TreatmentReminder extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,20 +12,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Appointment.belongsTo(models.Pet);
-
-      Appointment.hasOne(models.Professional);
-// eslint-disable-next-line linebreak-style
+      TreatmentReminder.belongsTo(models.Treatment);
     }
   };
-  Appointment.init({
-    dateRendezVous: DataTypes.DATE,
+  TreatmentReminder.init({
+    treatmentID: DataTypes.INTEGER,
     petID: DataTypes.INTEGER,
-    professionnelId: DataTypes.INTEGER,
-    utilisateurId: DataTypes.INTEGER
+    remindeDate: DataTypes.DATE,
   }, {
     sequelize,
-    modelName: 'Appointment',
+    modelName: 'TreatmentReminder',
   });
-  return Appointment;
+  return TreatmentReminder;
 };
