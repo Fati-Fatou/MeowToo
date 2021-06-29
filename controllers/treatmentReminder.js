@@ -74,7 +74,24 @@ exports.treatmentReminders_get_by_pet = async (req, res) => {
   }
 };
 
-// TODO UPDATE
+exports.treatmentReminders_delete_treatmentReminder = async (req, res) => {
+  const headerAuth = req.headers.authorization;
+  const pUserId = jwtUtils.getUserId(headerAuth);
 
+  if (pUserId < 0) {
+    return res.status(400).json({ error: 'Wrong Token' });
+  }
 
-// TODO DELETE
+  const treatmentReminderFound = await models.treatmentReminder.findOne({
+    where: { petID: req.body.idPet },
+  });
+
+  try {
+    const treatmentReminderDeleted = treatmentReminderFound.destroy({
+      where: { petID: treatmentReminderFound.petID },
+    });
+    return res.status(200).json(treatmentReminderDeleted);
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
